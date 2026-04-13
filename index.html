@@ -7,17 +7,25 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root {
-            --primary: #FF9F43;
-            --primary-dark: #F3841E;
-            --primary-light: #FFB970;
-            --secondary: #FFF9F0;
-            --text-dark: #333333;
-            --text-light: #666666;
-            --red: #FF6B6B;
-            --yellow: #FFD93D;
-            --green: #6BCB77;
-            --shadow: 0 4px 20px rgba(255, 159, 67, 0.15);
-            --shadow-light: 0 2px 10px rgba(255, 159, 67, 0.1);
+            --primary: #FFB86C;
+            --primary-dark: #FF9F43;
+            --primary-light: #FFD4A3;
+            --bg-primary: #FAFAFA;
+            --bg-secondary: #FFFFFF;
+            --text-primary: #2D3436;
+            --text-secondary: #636E72;
+            --text-tertiary: #B2BEC3;
+            --red: #FF7675;
+            --yellow: #FDCB6E;
+            --green: #00B894;
+            --shadow-soft: 0 2px 12px rgba(0, 0, 0, 0.04);
+            --shadow-medium: 0 4px 24px rgba(0, 0, 0, 0.06);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
         }
 
         * {
@@ -27,147 +35,311 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #FFF9F0 0%, #FFE8CC 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(180deg, #FFF8F0 0%, #FFFAF5 50%, #FFFFFF 100%);
             min-height: 100vh;
-            color: var(--text-dark);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .background-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+        }
+
+        .blob-1 {
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, #FFB86C 0%, #FFD4A3 100%);
+            top: -100px;
+            right: -50px;
+            animation: float1 8s ease-in-out infinite;
+        }
+
+        .blob-2 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #FFEAA7 0%, #FDCB6E 100%);
+            bottom: -80px;
+            left: -60px;
+            animation: float2 10s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, 20px) scale(1.05); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, -30px) scale(1.08); }
         }
 
         .container {
             max-width: 480px;
             margin: 0 auto;
             min-height: 100vh;
-            background: var(--secondary);
             position: relative;
-        }
-
-        .page {
-            display: none;
-            padding: 20px;
+            z-index: 1;
             padding-bottom: 100px;
         }
 
-        .page.active {
-            display: block;
-        }
-
         .header {
+            padding: 60px 24px 32px;
             text-align: center;
-            padding: 30px 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            border-radius: 0 0 30px 30px;
-            margin: -20px -20px 30px;
-            box-shadow: var(--shadow);
         }
 
-        .header h1 {
-            font-size: 28px;
+        .header-logo {
+            font-size: 32px;
             font-weight: 700;
+            letter-spacing: 4px;
             margin-bottom: 8px;
-            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .header p {
+        .header-subtitle {
             font-size: 14px;
-            opacity: 0.95;
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: 1px;
         }
 
         .suggestion-card {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-light);
-            border-left: 4px solid var(--primary);
+            margin: 0 24px 32px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 20px 24px;
+            box-shadow: var(--shadow-soft);
         }
 
-        .suggestion-card .icon {
-            font-size: 24px;
-            margin-bottom: 10px;
+        .suggestion-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
         }
 
-        .suggestion-card p {
+        .suggestion-text {
             font-size: 15px;
             line-height: 1.6;
-            color: var(--text-dark);
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px 16px;
         }
 
         .section-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 16px;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .section-title .badge {
-            background: var(--primary);
-            color: white;
+        .section-count {
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--text-secondary);
             font-size: 12px;
             padding: 2px 8px;
             border-radius: 10px;
+            font-weight: 500;
         }
 
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+        .card-list {
+            padding: 0 24px;
+            display: flex;
+            flex-direction: column;
             gap: 12px;
-            margin-bottom: 28px;
         }
 
         .relationship-card {
-            background: white;
-            border-radius: 16px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
             padding: 16px;
-            text-align: center;
+            box-shadow: var(--shadow-soft);
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-light);
-            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .relationship-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+        }
+
+        .relationship-card.red::before {
+            background: linear-gradient(180deg, var(--red) 0%, #FFA07A 100%);
+        }
+
+        .relationship-card.yellow::before {
+            background: linear-gradient(180deg, var(--yellow) 0%, #FFEAA7 100%);
+        }
+
+        .relationship-card.green::before {
+            background: linear-gradient(180deg, var(--green) 0%, #55EFC4 100%);
         }
 
         .relationship-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow);
-            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+            border-color: rgba(255, 184, 108, 0.2);
         }
 
-        .relationship-card.red {
-            border-top: 3px solid var(--red);
+        .relationship-card:active {
+            transform: translateY(0);
         }
 
-        .relationship-card.yellow {
-            border-top: 3px solid var(--yellow);
+        .card-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
-        .relationship-card.green {
-            border-top: 3px solid var(--green);
+        .card-avatar {
+            font-size: 44px;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFFAF5 100%);
+            border-radius: var(--radius-sm);
         }
 
-        .relationship-card .avatar {
-            font-size: 40px;
-            margin-bottom: 8px;
+        .card-info {
+            flex: 1;
+            min-width: 0;
         }
 
-        .relationship-card .name {
+        .card-name {
             font-size: 16px;
             font-weight: 600;
+            color: var(--text-primary);
             margin-bottom: 4px;
         }
 
-        .relationship-card .meta {
-            font-size: 12px;
-            color: var(--text-light);
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
-        .add-btn {
+        .card-tag {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-score {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
+
+        .card-score.red {
+            background: rgba(255, 118, 117, 0.1);
+            color: var(--red);
+        }
+
+        .card-score.yellow {
+            background: rgba(253, 203, 110, 0.15);
+            color: #E17055;
+        }
+
+        .card-score.green {
+            background: rgba(0, 184, 148, 0.1);
+            color: var(--green);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .quick-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: rgba(0, 0, 0, 0.03);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .quick-btn:hover {
+            background: rgba(255, 184, 108, 0.15);
+            transform: scale(1.05);
+        }
+
+        .quick-btn:active {
+            transform: scale(0.95);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 24px;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.6;
+        }
+
+        .empty-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .floating-btn {
             position: fixed;
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
             color: white;
             border: none;
             border-radius: 50px;
@@ -175,412 +347,553 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: var(--shadow);
+            box-shadow: 0 8px 24px rgba(255, 159, 67, 0.35);
             display: flex;
             align-items: center;
             gap: 10px;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 100;
         }
 
-        .add-btn:hover {
+        .floating-btn:hover {
             transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 12px 32px rgba(255, 159, 67, 0.45);
         }
 
-        .back-btn {
-            background: white;
-            border: none;
-            border-radius: 12px;
-            padding: 10px 16px;
-            font-size: 14px;
-            cursor: pointer;
+        .floating-btn:active {
+            transform: translateX(-50%) scale(0.98);
+        }
+
+        .floating-btn-icon {
+            font-size: 22px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow-light);
-            color: var(--text-dark);
-        }
-
-        .detail-header {
-            text-align: center;
-            padding: 30px 20px;
-            margin: -20px -20px 24px;
-        }
-
-        .detail-header .avatar {
-            font-size: 64px;
-            margin-bottom: 12px;
-        }
-
-        .detail-header .name {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .detail-header .tags {
-            display: flex;
+            align-items: flex-end;
             justify-content: center;
-            gap: 8px;
+            opacity: 1;
         }
 
-        .detail-header .tag {
-            background: rgba(255, 159, 67, 0.15);
-            color: var(--primary-dark);
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 13px;
-        }
-
-        .chart-container {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-light);
-        }
-
-        .chart-container h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-
-        .temperature-update {
-            background: white;
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-light);
-        }
-
-        .temperature-update h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .temperature-options {
+        .modal {
+            background: var(--bg-secondary);
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
             display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
+            flex-direction: column;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
 
-        .temp-option {
-            flex: 1;
-            padding: 16px;
-            border: 2px solid #E8E8E8;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .modal-overlay.active .modal {
+            transform: translateY(0);
         }
 
-        .temp-option:hover {
-            border-color: var(--primary-light);
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--text-tertiary);
+            border-radius: 2px;
+            margin: 12px auto;
         }
 
-        .temp-option.selected {
-            border-color: var(--primary);
-            background: rgba(255, 159, 67, 0.1);
-        }
-
-        .temp-option .emoji {
-            font-size: 28px;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .temp-option .label {
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .note-input {
-            width: 100%;
-            border: 2px solid #E8E8E8;
-            border-radius: 12px;
-            padding: 14px;
-            font-size: 14px;
-            resize: none;
-            margin-bottom: 16px;
-            font-family: inherit;
-        }
-
-        .note-input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .history-list {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: var(--shadow-light);
-        }
-
-        .history-list h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-
-        .history-item {
-            padding: 16px 0;
-            border-bottom: 1px solid #F0F0F0;
-        }
-
-        .history-item:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .history-item .date {
-            font-size: 13px;
-            color: var(--text-light);
-            margin-bottom: 8px;
-        }
-
-        .history-item .score {
-            display: inline-flex;
+        .modal-header {
+            padding: 20px 24px 16px;
+            display: flex;
             align-items: center;
-            gap: 6px;
-            background: rgba(255, 159, 67, 0.15);
-            color: var(--primary-dark);
-            padding: 4px 10px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-        .history-item .note {
-            font-size: 14px;
-            color: var(--text-dark);
-            line-height: 1.5;
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.04);
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .modal-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            -webkit-overflow-scrolling: touch;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
-        .form-group label {
+        .form-label {
             display: block;
             font-size: 14px;
             font-weight: 500;
-            margin-bottom: 8px;
-            color: var(--text-dark);
+            color: var(--text-primary);
+            margin-bottom: 10px;
         }
 
-        .form-control {
+        .form-input {
             width: 100%;
-            border: 2px solid #E8E8E8;
-            border-radius: 12px;
-            padding: 14px;
+            padding: 14px 16px;
             font-size: 15px;
+            border: 2px solid rgba(0, 0, 0, 0.06);
+            border-radius: var(--radius-sm);
+            background: var(--bg-primary);
             font-family: inherit;
-            transition: all 0.3s ease;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
         }
 
-        .form-control:focus {
+        .form-input:focus {
             outline: none;
             border-color: var(--primary);
+            background: var(--bg-secondary);
         }
 
-        .avatar-selector {
+        .avatar-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 10px;
         }
 
         .avatar-option {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 32px;
-            padding: 12px;
-            text-align: center;
-            border: 2px solid #E8E8E8;
-            border-radius: 12px;
+            background: var(--bg-primary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
         }
 
         .avatar-option:hover {
-            border-color: var(--primary-light);
-            transform: scale(1.1);
+            background: rgba(255, 184, 108, 0.1);
+            transform: scale(1.05);
         }
 
         .avatar-option.selected {
             border-color: var(--primary);
-            background: rgba(255, 159, 67, 0.1);
+            background: rgba(255, 184, 108, 0.15);
         }
 
-        .type-selector {
+        .type-row {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
 
         .type-option {
             flex: 1;
-            padding: 16px;
-            border: 2px solid #E8E8E8;
-            border-radius: 12px;
-            text-align: center;
+            padding: 16px 12px;
+            background: var(--bg-primary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
             cursor: pointer;
-            transition: all 0.3s ease;
+            text-align: center;
+            transition: all 0.2s ease;
         }
 
         .type-option:hover {
-            border-color: var(--primary-light);
+            background: rgba(255, 184, 108, 0.1);
         }
 
         .type-option.selected {
             border-color: var(--primary);
-            background: rgba(255, 159, 67, 0.1);
+            background: rgba(255, 184, 108, 0.15);
         }
 
-        .type-option .icon {
+        .type-icon {
             font-size: 28px;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
-        .type-option .label {
-            font-size: 14px;
+        .type-label {
+            font-size: 13px;
             font-weight: 500;
+            color: var(--text-primary);
         }
 
-        .level-selector {
+        .level-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .level-option {
-            padding: 14px 16px;
-            border: 2px solid #E8E8E8;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: var(--bg-primary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
         .level-option:hover {
-            border-color: var(--primary-light);
+            background: rgba(255, 184, 108, 0.1);
         }
 
         .level-option.selected {
             border-color: var(--primary);
-            background: rgba(255, 159, 67, 0.1);
+            background: rgba(255, 184, 108, 0.15);
         }
 
-        .level-option .label {
-            font-size: 15px;
+        .level-name {
+            font-size: 14px;
             font-weight: 500;
+            color: var(--text-primary);
         }
 
-        .empty-state {
+        .level-stars {
+            color: var(--text-tertiary);
+            letter-spacing: 2px;
+        }
+
+        .level-option.selected .level-stars {
+            color: var(--primary);
+        }
+
+        .modal-footer {
+            padding: 16px 24px 24px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(255, 159, 67, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .detail-header-section {
             text-align: center;
-            padding: 60px 20px;
+            padding: 8px 0 24px;
         }
 
-        .empty-state .icon {
-            font-size: 64px;
+        .detail-avatar {
+            font-size: 72px;
+            margin-bottom: 16px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFFAF5 100%);
+            border-radius: var(--radius-lg);
+        }
+
+        .detail-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .detail-tags {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .detail-tag {
+            padding: 6px 12px;
+            background: rgba(0, 0, 0, 0.04);
+            border-radius: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .detail-tag.primary {
+            background: rgba(255, 184, 108, 0.15);
+            color: var(--primary-dark);
+        }
+
+        .chart-card {
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
             margin-bottom: 16px;
         }
 
-        .empty-state p {
-            font-size: 16px;
-            color: var(--text-light);
-            line-height: 1.6;
+        .temp-update-section {
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .temp-update-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .temp-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .temp-option {
+            flex: 1;
+            padding: 16px 12px;
+            background: var(--bg-secondary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .temp-option:hover {
+            border-color: rgba(255, 184, 108, 0.3);
+        }
+
+        .temp-option.selected {
+            border-color: var(--primary);
+            background: rgba(255, 184, 108, 0.1);
+        }
+
+        .temp-emoji {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .temp-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .note-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid rgba(0, 0, 0, 0.06);
+            border-radius: var(--radius-sm);
+            background: var(--bg-secondary);
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            min-height: 80px;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .note-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .history-section {
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+            padding: 20px;
+        }
+
+        .history-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .history-item {
+            padding: 14px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+        }
+
+        .history-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .history-score {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: rgba(255, 184, 108, 0.15);
+            color: var(--primary-dark);
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .history-note {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.5;
         }
 
         @keyframes breathe {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.03); }
         }
 
         .breathing {
-            animation: breathe 2s ease-in-out infinite;
+            animation: breathe 2.5s ease-in-out infinite;
         }
     </style>
 </head>
 <body>
+    <div class="background-decoration">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
     <div class="container">
-        <div id="home-page" class="page active">
-            <div class="header">
-                <h1>☀️ 暖流</h1>
-                <p>让每一段关系都被看见</p>
+        <div class="header">
+            <div class="header-logo">暖流</div>
+            <div class="header-subtitle">让每一段关系都被看见</div>
+        </div>
+
+        <div id="suggestion-area"></div>
+
+        <div id="relationships-area"></div>
+    </div>
+
+    <button class="floating-btn" onclick="openAddModal()">
+        <span class="floating-btn-icon">+</span>
+        添加重要的人
+    </button>
+
+    <div class="modal-overlay" id="add-modal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <div class="modal-title">添加重要的人</div>
+                <button class="modal-close" onclick="closeAddModal()">×</button>
             </div>
-
-            <div id="suggestion-area"></div>
-
-            <div id="relationships-area"></div>
-        </div>
-
-        <div id="add-page" class="page">
-            <button class="back-btn" onclick="navigate('home')">← 返回</button>
-            <h2 style="margin-bottom: 24px; font-size: 22px;">添加重要的人</h2>
-
-            <form id="add-form">
+            <div class="modal-content">
                 <div class="form-group">
-                    <label>头像</label>
-                    <div class="avatar-selector" id="avatar-selector"></div>
+                    <label class="form-label">选择头像</label>
+                    <div class="avatar-grid" id="avatar-grid"></div>
                 </div>
 
                 <div class="form-group">
-                    <label>昵称</label>
-                    <input type="text" class="form-control" id="name-input" placeholder="输入昵称" required>
+                    <label class="form-label">昵称</label>
+                    <input type="text" class="form-input" id="name-input" placeholder="给Ta起个名字">
                 </div>
 
                 <div class="form-group">
-                    <label>关系类型</label>
-                    <div class="type-selector" id="type-selector"></div>
+                    <label class="form-label">关系类型</label>
+                    <div class="type-row" id="type-row"></div>
                 </div>
 
                 <div class="form-group">
-                    <label>关系等级</label>
-                    <div class="level-selector" id="level-selector"></div>
+                    <label class="form-label">关系等级</label>
+                    <div class="level-list" id="level-list"></div>
                 </div>
 
                 <div class="form-group">
-                    <label>生日（可选）</label>
-                    <input type="text" class="form-control" id="birthday-input" placeholder="格式：05-20">
+                    <label class="form-label">生日（可选）</label>
+                    <input type="text" class="form-input" id="birthday-input" placeholder="格式：05-20">
                 </div>
-
-                <button type="submit" class="submit-btn">添加</button>
-            </form>
-        </div>
-
-        <div id="detail-page" class="page">
-            <button class="back-btn" onclick="navigate('home')">← 返回</button>
-            <div id="detail-content"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="addRelationship()">添加</button>
+            </div>
         </div>
     </div>
 
-    <button class="add-btn" id="add-btn" onclick="navigate('add')">
-        <span style="font-size: 24px;">+</span>
-        添加重要的人
-    </button>
+    <div class="modal-overlay" id="detail-modal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <div class="modal-title">关系详情</div>
+                <button class="modal-close" onclick="closeDetailModal()">×</button>
+            </div>
+            <div class="modal-content" id="detail-content"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="quick-modal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <div class="modal-title">记录温度</div>
+                <button class="modal-close" onclick="closeQuickModal()">×</button>
+            </div>
+            <div class="modal-content" id="quick-content"></div>
+        </div>
+    </div>
 
     <script>
         const RELATIONSHIP_TYPES = {
@@ -597,7 +910,7 @@
             best: { label: '挚友', value: 4 }
         };
 
-        const AVATAR_OPTIONS = ['😊', '🤝', '❤️', '🎉', '🎁', '🌟', '🌸', '☀️', '🌙', '🔥', '💫', '🌈', '🎨', '🎵', '🏠', '👨‍👩‍👧', '👥', '🤗', '💪', '🎯'];
+        const AVATAR_OPTIONS = ['😊', '🤝', '❤️', '🎉', '🎁', '🌟', '🌸', '☀️', '🌙', '🔥', '💫', '🌈', '🎨', '🎵', '🏠', '👨‍👩‍👧', '🤗', '💪', '🎯', '📚'];
 
         let data = {
             relationships: [
@@ -667,7 +980,7 @@
         let selectedType = 'friend';
         let selectedLevel = 'friend';
         let currentDetailId = null;
-        let selectedTempChange = null;
+        let quickTempChange = null;
         let chartInstance = null;
 
         function getCurrentDate() {
@@ -690,8 +1003,6 @@
         function getStatus(relationship) {
             const days = getDaysSince(relationship.lastContact);
             const score = getCurrentScore(relationship);
-            const prevScore = relationship.temperatureHistory.length > 1 ? 
-                relationship.temperatureHistory[relationship.temperatureHistory.length - 2].score : score;
 
             if (days >= 14 || score < 50) return { type: 'red', label: '需要关心' };
             if (days >= 7 || score < 70) return { type: 'yellow', label: '保持联系' };
@@ -761,8 +1072,8 @@
             if (suggestions.length > 0) {
                 suggestionArea.innerHTML = `
                     <div class="suggestion-card">
-                        <div class="icon">💡</div>
-                        <p>${suggestions[0]}</p>
+                        <div class="suggestion-icon">💡</div>
+                        <div class="suggestion-text">${suggestions[0]}</div>
                     </div>
                 `;
             } else {
@@ -783,36 +1094,48 @@
 
             if (red.length > 0) {
                 html += `
-                    <div class="section-title">
-                        🔴 需要关心
-                        <span class="badge">${red.length}</span>
-                    </div>
-                    <div class="card-grid">
-                        ${red.map(r => renderCard(r, 'red')).join('')}
+                    <div class="section">
+                        <div class="section-header">
+                            <div class="section-title">
+                                🔴 需要关心
+                                <span class="section-count">${red.length}</span>
+                            </div>
+                        </div>
+                        <div class="card-list">
+                            ${red.map(r => renderCard(r, 'red')).join('')}
+                        </div>
                     </div>
                 `;
             }
 
             if (yellow.length > 0) {
                 html += `
-                    <div class="section-title">
-                        🟡 保持联系
-                        <span class="badge">${yellow.length}</span>
-                    </div>
-                    <div class="card-grid">
-                        ${yellow.map(r => renderCard(r, 'yellow')).join('')}
+                    <div class="section">
+                        <div class="section-header">
+                            <div class="section-title">
+                                🟡 保持联系
+                                <span class="section-count">${yellow.length}</span>
+                            </div>
+                        </div>
+                        <div class="card-list">
+                            ${yellow.map(r => renderCard(r, 'yellow')).join('')}
+                        </div>
                     </div>
                 `;
             }
 
             if (green.length > 0) {
                 html += `
-                    <div class="section-title">
-                        🟢 关系健康
-                        <span class="badge">${green.length}</span>
-                    </div>
-                    <div class="card-grid">
-                        ${green.map(r => renderCard(r, 'green')).join('')}
+                    <div class="section">
+                        <div class="section-header">
+                            <div class="section-title">
+                                🟢 关系健康
+                                <span class="section-count">${green.length}</span>
+                            </div>
+                        </div>
+                        <div class="card-list">
+                            ${green.map(r => renderCard(r, 'green')).join('')}
+                        </div>
                     </div>
                 `;
             }
@@ -820,8 +1143,8 @@
             if (data.relationships.length === 0) {
                 html = `
                     <div class="empty-state">
-                        <div class="icon">🌟</div>
-                        <p>还没有添加任何人<br>点击下方按钮开始吧</p>
+                        <div class="empty-icon">🌟</div>
+                        <div class="empty-text">还没有添加任何人<br>点击下方按钮开始吧</div>
                     </div>
                 `;
             }
@@ -831,228 +1154,89 @@
 
         function renderCard(r, type) {
             const days = getDaysSince(r.lastContact);
-            return `
-                <div class="relationship-card ${type}" onclick="openDetail('${r.id}')">
-                    <div class="avatar">${r.avatar}</div>
-                    <div class="name">${r.name}</div>
-                    <div class="meta">${days}天前</div>
-                </div>
-            `;
-        }
-
-        function renderAdd() {
-            const avatarSelector = document.getElementById('avatar-selector');
-            const typeSelector = document.getElementById('type-selector');
-            const levelSelector = document.getElementById('level-selector');
-
-            avatarSelector.innerHTML = AVATAR_OPTIONS.map(a => `
-                <div class="avatar-option ${a === selectedAvatar ? 'selected' : ''}" onclick="selectAvatar('${a}')">
-                    ${a}
-                </div>
-            `).join('');
-
-            typeSelector.innerHTML = Object.entries(RELATIONSHIP_TYPES).map(([key, val]) => `
-                <div class="type-option ${key === selectedType ? 'selected' : ''}" onclick="selectType('${key}')">
-                    <span class="icon">${val.icon}</span>
-                    <span class="label">${val.label}</span>
-                </div>
-            `).join('');
-
-            levelSelector.innerHTML = Object.entries(RELATIONSHIP_LEVELS).map(([key, val]) => `
-                <div class="level-option ${key === selectedLevel ? 'selected' : ''}" onclick="selectLevel('${key}')">
-                    <span class="label">${val.label}</span>
-                    <span style="color: #999;">${'★'.repeat(val.value + 1)}</span>
-                </div>
-            `).join('');
-        }
-
-        function selectAvatar(avatar) {
-            selectedAvatar = avatar;
-            renderAdd();
-        }
-
-        function selectType(type) {
-            selectedType = type;
-            renderAdd();
-        }
-
-        function selectLevel(level) {
-            selectedLevel = level;
-            renderAdd();
-        }
-
-        function renderDetail() {
-            const r = data.relationships.find(x => x.id === currentDetailId);
-            if (!r) return;
-
-            const content = document.getElementById('detail-content');
-            const typeInfo = RELATIONSHIP_TYPES[r.type];
-            const levelInfo = RELATIONSHIP_LEVELS[r.level];
             const score = getCurrentScore(r);
-
-            content.innerHTML = `
-                <div class="detail-header">
-                    <div class="avatar breathing">${r.avatar}</div>
-                    <div class="name">${r.name}</div>
-                    <div class="tags">
-                        <span class="tag">${typeInfo.icon} ${typeInfo.label}</span>
-                        <span class="tag">${'★'.repeat(levelInfo.value + 1)} ${levelInfo.label}</span>
-                        <span class="tag">🌡️ ${score}分</span>
-                    </div>
-                </div>
-
-                <div class="chart-container">
-                    <h3>📈 温度曲线</h3>
-                    <canvas id="temp-chart"></canvas>
-                </div>
-
-                <div class="temperature-update">
-                    <h3>✨ 和${r.name}的关系最近好吗？</h3>
-                    <div class="temperature-options">
-                        <div class="temp-option" onclick="selectTempChange(-10)">
-                            <span class="emoji">❄️</span>
-                            <span class="label">变冷</span>
+            const typeInfo = RELATIONSHIP_TYPES[r.type];
+            
+            return `
+                <div class="relationship-card ${type}">
+                    <div class="card-content">
+                        <div class="card-avatar">${r.avatar}</div>
+                        <div class="card-info">
+                            <div class="card-name">${r.name}</div>
+                            <div class="card-meta">
+                                <span class="card-tag">${typeInfo.icon} ${typeInfo.label}</span>
+                                <span class="card-tag">${days}天前</span>
+                                <span class="card-score ${type}">🌡️ ${score}分</span>
+                            </div>
                         </div>
-                        <div class="temp-option" onclick="selectTempChange(0)">
-                            <span class="emoji">😊</span>
-                            <span class="label">没变化</span>
-                        </div>
-                        <div class="temp-option" onclick="selectTempChange(10)">
-                            <span class="emoji">☀️</span>
-                            <span class="label">变暖</span>
+                        <div class="card-actions">
+                            <button class="quick-btn" onclick="event.stopPropagation(); openQuickModal('${r.id}')">✏️</button>
+                            <button class="quick-btn" onclick="event.stopPropagation(); openDetailModal('${r.id}')">📊</button>
                         </div>
                     </div>
-                    <textarea class="note-input" id="temp-note" placeholder="今天发生啥了？（可选）"></textarea>
-                    <button class="submit-btn" onclick="addTemperature()">记录</button>
-                </div>
-
-                <div class="history-list">
-                    <h3>📝 历史记录</h3>
-                    ${r.temperatureHistory.slice().reverse().map(h => `
-                        <div class="history-item">
-                            <div class="date">${h.date}</div>
-                            <div class="score">🌡️ ${h.score}分</div>
-                            ${h.note ? `<div class="note">${h.note}</div>` : ''}
-                        </div>
-                    `).join('')}
                 </div>
             `;
-
-            renderChart(r);
         }
 
-        function renderChart(relationship) {
-            const ctx = document.getElementById('temp-chart');
-            if (!ctx) return;
-
-            if (chartInstance) {
-                chartInstance.destroy();
-            }
-
-            const history = relationship.temperatureHistory;
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: history.map(h => h.date.slice(5)),
-                    datasets: [{
-                        label: '温度',
-                        data: history.map(h => h.score),
-                        borderColor: '#FF9F43',
-                        backgroundColor: 'rgba(255, 159, 67, 0.1)',
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#FF9F43',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 2,
-                        pointRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            min: 0,
-                            max: 100,
-                            grid: {
-                                color: 'rgba(0,0,0,0.05)'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
+        function openAddModal() {
+            selectedAvatar = '😊';
+            selectedType = 'friend';
+            selectedLevel = 'friend';
+            renderAddModalContent();
+            const modal = document.getElementById('add-modal');
+            modal.classList.add('active');
         }
 
-        function selectTempChange(change) {
-            selectedTempChange = change;
-            document.querySelectorAll('.temp-option').forEach((el, i) => {
-                const changes = [-10, 0, 10];
-                el.classList.toggle('selected', changes[i] === change);
-            });
+        function closeAddModal() {
+            const modal = document.getElementById('add-modal');
+            modal.classList.remove('active');
+            document.getElementById('name-input').value = '';
+            document.getElementById('birthday-input').value = '';
         }
 
-        function addTemperature() {
-            if (selectedTempChange === null) {
-                alert('请选择温度变化');
-                return;
-            }
+        function renderAddModalContent() {
+            const avatarGrid = document.getElementById('avatar-grid');
+            const typeRow = document.getElementById('type-row');
+            const levelList = document.getElementById('level-list');
 
-            const r = data.relationships.find(x => x.id === currentDetailId);
-            const currentScore = getCurrentScore(r);
-            const newScore = Math.max(0, Math.min(100, currentScore + selectedTempChange));
-            const note = document.getElementById('temp-note').value;
+            avatarGrid.innerHTML = AVATAR_OPTIONS.map(a => `
+                <div class="avatar-option ${a === selectedAvatar ? 'selected' : ''}" 
+                     onclick="selectAddAvatar('${a}')">${a}</div>
+            `).join('');
 
-            r.temperatureHistory.push({
-                date: getCurrentDate(),
-                score: newScore,
-                note: note
-            });
-            r.lastContact = getCurrentDate();
+            typeRow.innerHTML = Object.entries(RELATIONSHIP_TYPES).map(([key, val]) => `
+                <div class="type-option ${key === selectedType ? 'selected' : ''}"
+                     onclick="selectAddType('${key}')">
+                    <span class="type-icon">${val.icon}</span>
+                    <span class="type-label">${val.label}</span>
+                </div>
+            `).join('');
 
-            saveData();
-            selectedTempChange = null;
-            renderDetail();
+            levelList.innerHTML = Object.entries(RELATIONSHIP_LEVELS).map(([key, val]) => `
+                <div class="level-option ${key === selectedLevel ? 'selected' : ''}"
+                     onclick="selectAddLevel('${key}')">
+                    <span class="level-name">${val.label}</span>
+                    <span class="level-stars">${'★'.repeat(val.value + 1)}</span>
+                </div>
+            `).join('');
         }
 
-        function openDetail(id) {
-            currentDetailId = id;
-            selectedTempChange = null;
-            navigate('detail');
+        function selectAddAvatar(avatar) {
+            selectedAvatar = avatar;
+            renderAddModalContent();
         }
 
-        function navigate(page) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(`${page}-page`).classList.add('active');
-
-            document.getElementById('add-btn').style.display = page === 'home' ? 'flex' : 'none';
-
-            if (page === 'home') renderHome();
-            else if (page === 'add') renderAdd();
-            else if (page === 'detail') renderDetail();
+        function selectAddType(type) {
+            selectedType = type;
+            renderAddModalContent();
         }
 
-        function saveData() {
-            localStorage.setItem('warmFlow', JSON.stringify(data));
+        function selectAddLevel(level) {
+            selectedLevel = level;
+            renderAddModalContent();
         }
 
-        function loadData() {
-            const saved = localStorage.getItem('warmFlow');
-            if (saved) {
-                data = JSON.parse(saved);
-            }
-        }
-
-        document.getElementById('add-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+        function addRelationship() {
             const name = document.getElementById('name-input').value.trim();
             const birthday = document.getElementById('birthday-input').value.trim() || null;
 
@@ -1079,14 +1263,203 @@
 
             data.relationships.push(newRelationship);
             saveData();
+            closeAddModal();
+            renderHome();
+        }
 
-            document.getElementById('name-input').value = '';
-            document.getElementById('birthday-input').value = '';
-            selectedAvatar = '😊';
-            selectedType = 'friend';
-            selectedLevel = 'friend';
+        function openDetailModal(id) {
+            currentDetailId = id;
+            renderDetailContent();
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('active');
+        }
 
-            navigate('home');
+        function closeDetailModal() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.remove('active');
+            currentDetailId = null;
+        }
+
+        function renderDetailContent() {
+            const r = data.relationships.find(x => x.id === currentDetailId);
+            if (!r) return;
+
+            const content = document.getElementById('detail-content');
+            const typeInfo = RELATIONSHIP_TYPES[r.type];
+            const levelInfo = RELATIONSHIP_LEVELS[r.level];
+            const score = getCurrentScore(r);
+
+            content.innerHTML = `
+                <div class="detail-header-section">
+                    <div class="detail-avatar breathing">${r.avatar}</div>
+                    <div class="detail-name">${r.name}</div>
+                    <div class="detail-tags">
+                        <span class="detail-tag primary">${typeInfo.icon} ${typeInfo.label}</span>
+                        <span class="detail-tag">★${'★'.repeat(levelInfo.value)} ${levelInfo.label}</span>
+                        <span class="detail-tag primary">🌡️ ${score}分</span>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-title">📈 温度曲线</div>
+                    <canvas id="detail-chart"></canvas>
+                </div>
+
+                <div class="history-section">
+                    <div class="history-title">📝 历史记录</div>
+                    <div class="history-list">
+                        ${r.temperatureHistory.slice().reverse().map(h => `
+                            <div class="history-item">
+                                <div class="history-date">${h.date}</div>
+                                <div class="history-score">🌡️ ${h.score}分</div>
+                                ${h.note ? `<div class="history-note">${h.note}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            renderChart(r);
+        }
+
+        function renderChart(relationship) {
+            const ctx = document.getElementById('detail-chart');
+            if (!ctx) return;
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            const history = relationship.temperatureHistory;
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: history.map(h => h.date.slice(5)),
+                    datasets: [{
+                        label: '温度',
+                        data: history.map(h => h.score),
+                        borderColor: '#FFB86C',
+                        backgroundColor: 'rgba(255, 184, 108, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#FFB86C',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 100,
+                            grid: { color: 'rgba(0, 0, 0, 0.04)' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        function openQuickModal(id) {
+            currentDetailId = id;
+            quickTempChange = null;
+            renderQuickContent();
+            const modal = document.getElementById('quick-modal');
+            modal.classList.add('active');
+        }
+
+        function closeQuickModal() {
+            const modal = document.getElementById('quick-modal');
+            modal.classList.remove('active');
+            currentDetailId = null;
+            quickTempChange = null;
+        }
+
+        function renderQuickContent() {
+            const r = data.relationships.find(x => x.id === currentDetailId);
+            if (!r) return;
+
+            const content = document.getElementById('quick-content');
+            content.innerHTML = `
+                <div class="temp-update-section" style="margin-bottom: 0;">
+                    <div class="temp-update-title">✨ 和${r.name}的关系最近好吗？</div>
+                    <div class="temp-options">
+                        <div class="temp-option ${quickTempChange === -10 ? 'selected' : ''}"
+                             onclick="selectQuickTemp(-10)">
+                            <span class="temp-emoji">❄️</span>
+                            <span class="temp-label">变冷</span>
+                        </div>
+                        <div class="temp-option ${quickTempChange === 0 ? 'selected' : ''}"
+                             onclick="selectQuickTemp(0)">
+                            <span class="temp-emoji">😊</span>
+                            <span class="temp-label">没变化</span>
+                        </div>
+                        <div class="temp-option ${quickTempChange === 10 ? 'selected' : ''}"
+                             onclick="selectQuickTemp(10)">
+                            <span class="temp-emoji">☀️</span>
+                            <span class="temp-label">变暖</span>
+                        </div>
+                    </div>
+                    <textarea class="note-textarea" id="quick-note" placeholder="今天发生啥了？（可选）"></textarea>
+                </div>
+                <div class="modal-footer" style="padding: 16px 0 0;">
+                    <button class="btn-primary" onclick="quickAddTemperature()">记录</button>
+                </div>
+            `;
+        }
+
+        function selectQuickTemp(change) {
+            quickTempChange = change;
+            renderQuickContent();
+        }
+
+        function quickAddTemperature() {
+            if (quickTempChange === null) {
+                alert('请选择温度变化');
+                return;
+            }
+
+            const r = data.relationships.find(x => x.id === currentDetailId);
+            const currentScore = getCurrentScore(r);
+            const newScore = Math.max(0, Math.min(100, currentScore + quickTempChange));
+            const note = document.getElementById('quick-note').value;
+
+            r.temperatureHistory.push({
+                date: getCurrentDate(),
+                score: newScore,
+                note: note
+            });
+            r.lastContact = getCurrentDate();
+
+            saveData();
+            closeQuickModal();
+            renderHome();
+        }
+
+        function saveData() {
+            localStorage.setItem('warmFlow', JSON.stringify(data));
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('warmFlow');
+            if (saved) {
+                data = JSON.parse(saved);
+            }
+        }
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
         });
 
         loadData();
