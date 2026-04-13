@@ -1515,7 +1515,7 @@
             const typeInfo = RELATIONSHIP_TYPES[r.type];
             
             return `
-                <div class="relationship-card ${type}">
+                <div class="relationship-card ${type}" onclick="openDetailModal('${r.id}')">
                     <div class="card-content">
                         <div class="card-avatar">${r.avatar}</div>
                         <div class="card-info">
