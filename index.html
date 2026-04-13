@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暖流 - 让每一段关系都被看见</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --primary: #FF9F43;
+            --primary-dark: #F3841E;
+            --primary-light: #FFB970;
+            --secondary: #FFF9F0;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --red: #FF6B6B;
+            --yellow: #FFD93D;
+            --green: #6BCB77;
+            --shadow: 0 4px 20px rgba(255, 159, 67, 0.15);
+            --shadow-light: 0 2px 10px rgba(255, 159, 67, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #FFF9F0 0%, #FFE8CC 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: var(--secondary);
+            position: relative;
+        }
+
+        .page {
+            display: none;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border-radius: 0 0 30px 30px;
+            margin: -20px -20px 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+
+        .suggestion-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-light);
+            border-left: 4px solid var(--primary);
+        }
+
+        .suggestion-card .icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .suggestion-card p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .badge {
+            background: var(--primary);
+            color: white;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .relationship-card {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-light);
+            border: 2px solid transparent;
+        }
+
+        .relationship-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow);
+            border-color: var(--primary-light);
+        }
+
+        .relationship-card.red {
+            border-top: 3px solid var(--red);
+        }
+
+        .relationship-card.yellow {
+            border-top: 3px solid var(--yellow);
+        }
+
+        .relationship-card.green {
+            border-top: 3px solid var(--green);
+        }
+
+        .relationship-card .avatar {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .relationship-card .name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .relationship-card .meta {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .add-btn {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .add-btn:hover {
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        .back-btn {
+            background: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-light);
+            color: var(--text-dark);
+        }
+
+        .detail-header {
+            text-align: center;
+            padding: 30px 20px;
+            margin: -20px -20px 24px;
+        }
+
+        .detail-header .avatar {
+            font-size: 64px;
+            margin-bottom: 12px;
+        }
+
+        .detail-header .name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .detail-header .tags {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .detail-header .tag {
+            background: rgba(255, 159, 67, 0.15);
+            color: var(--primary-dark);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .chart-container h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .temperature-update {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .temperature-update h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .temperature-options {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .temp-option {
+            flex: 1;
+            padding: 16px;
+            border: 2px solid #E8E8E8;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .temp-option:hover {
+            border-color: var(--primary-light);
+        }
+
+        .temp-option.selected {
+            border-color: var(--primary);
+            background: rgba(255, 159, 67, 0.1);
+        }
+
+        .temp-option .emoji {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .temp-option .label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .note-input {
+            width: 100%;
+            border: 2px solid #E8E8E8;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 14px;
+            resize: none;
+            margin-bottom: 16px;
+            font-family: inherit;
+        }
+
+        .note-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .history-list {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .history-list h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .history-item {
+            padding: 16px 0;
+            border-bottom: 1px solid #F0F0F0;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .history-item .date {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .history-item .score {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 159, 67, 0.15);
+            color: var(--primary-dark);
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .history-item .note {
+            font-size: 14px;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .form-control {
+            width: 100%;
+            border: 2px solid #E8E8E8;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .avatar-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .avatar-option {
+            font-size: 32px;
+            padding: 12px;
+            text-align: center;
+            border: 2px solid #E8E8E8;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-option:hover {
+            border-color: var(--primary-light);
+            transform: scale(1.1);
+        }
+
+        .avatar-option.selected {
+            border-color: var(--primary);
+            background: rgba(255, 159, 67, 0.1);
+        }
+
+        .type-selector {
+            display: flex;
+            gap: 12px;
+        }
+
+        .type-option {
+            flex: 1;
+            padding: 16px;
+            border: 2px solid #E8E8E8;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .type-option:hover {
+            border-color: var(--primary-light);
+        }
+
+        .type-option.selected {
+            border-color: var(--primary);
+            background: rgba(255, 159, 67, 0.1);
+        }
+
+        .type-option .icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .type-option .label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .level-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .level-option {
+            padding: 14px 16px;
+            border: 2px solid #E8E8E8;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .level-option:hover {
+            border-color: var(--primary-light);
+        }
+
+        .level-option.selected {
+            border-color: var(--primary);
+            background: rgba(255, 159, 67, 0.1);
+        }
+
+        .level-option .label {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .breathing {
+            animation: breathe 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="home-page" class="page active">
+            <div class="header">
+                <h1>☀️ 暖流</h1>
+                <p>让每一段关系都被看见</p>
+            </div>
+
+            <div id="suggestion-area"></div>
+
+            <div id="relationships-area"></div>
+        </div>
+
+        <div id="add-page" class="page">
+            <button class="back-btn" onclick="navigate('home')">← 返回</button>
+            <h2 style="margin-bottom: 24px; font-size: 22px;">添加重要的人</h2>
+
+            <form id="add-form">
+                <div class="form-group">
+                    <label>头像</label>
+                    <div class="avatar-selector" id="avatar-selector"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>昵称</label>
+                    <input type="text" class="form-control" id="name-input" placeholder="输入昵称" required>
+                </div>
+
+                <div class="form-group">
+                    <label>关系类型</label>
+                    <div class="type-selector" id="type-selector"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>关系等级</label>
+                    <div class="level-selector" id="level-selector"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>生日（可选）</label>
+                    <input type="text" class="form-control" id="birthday-input" placeholder="格式：05-20">
+                </div>
+
+                <button type="submit" class="submit-btn">添加</button>
+            </form>
+        </div>
+
+        <div id="detail-page" class="page">
+            <button class="back-btn" onclick="navigate('home')">← 返回</button>
+            <div id="detail-content"></div>
+        </div>
+    </div>
+
+    <button class="add-btn" id="add-btn" onclick="navigate('add')">
+        <span style="font-size: 24px;">+</span>
+        添加重要的人
+    </button>
+
+    <script>
+        const RELATIONSHIP_TYPES = {
+            friend: { label: '朋友', icon: '👥' },
+            lover: { label: '恋人', icon: '❤️' },
+            family: { label: '家人', icon: '🏠' }
+        };
+
+        const RELATIONSHIP_LEVELS = {
+            stranger: { label: '陌生', value: 0 },
+            acquaintance: { label: '认识', value: 1 },
+            friend: { label: '熟识', value: 2 },
+            close: { label: '亲密', value: 3 },
+            best: { label: '挚友', value: 4 }
+        };
+
+        const AVATAR_OPTIONS = ['😊', '🤝', '❤️', '🎉', '🎁', '🌟', '🌸', '☀️', '🌙', '🔥', '💫', '🌈', '🎨', '🎵', '🏠', '👨‍👩‍👧', '👥', '🤗', '💪', '🎯'];
+
+        let data = {
+            relationships: [
+                {
+                    id: '1',
+                    name: '小明',
+                    avatar: '🤝',
+                    type: 'friend',
+                    level: 'close',
+                    birthday: '05-20',
+                    lastContact: '2026-03-30',
+                    temperatureHistory: [
+                        { date: '2026-03-01', score: 70, note: '一起吃饭' },
+                        { date: '2026-03-15', score: 65, note: '好久没见' },
+                        { date: '2026-03-30', score: 55, note: '刚吵完架' }
+                    ],
+                    createdAt: '2026-01-15'
+                },
+                {
+                    id: '2',
+                    name: '老妈',
+                    avatar: '🏠',
+                    type: 'family',
+                    level: 'best',
+                    birthday: '08-15',
+                    lastContact: '2026-03-20',
+                    temperatureHistory: [
+                        { date: '2026-02-01', score: 85, note: '打电话回家' },
+                        { date: '2026-03-01', score: 80, note: '视频通话' },
+                        { date: '2026-03-20', score: 75, note: '好久没打了' }
+                    ],
+                    createdAt: '2026-01-01'
+                },
+                {
+                    id: '3',
+                    name: '小红',
+                    avatar: '❤️',
+                    type: 'lover',
+                    level: 'best',
+                    birthday: '12-25',
+                    lastContact: '2026-04-10',
+                    temperatureHistory: [
+                        { date: '2026-03-01', score: 75, note: '约会' },
+                        { date: '2026-03-20', score: 82, note: '一起看电影' },
+                        { date: '2026-04-10', score: 88, note: '收到礼物' }
+                    ],
+                    createdAt: '2026-02-14'
+                },
+                {
+                    id: '4',
+                    name: '阿杰',
+                    avatar: '👥',
+                    type: 'friend',
+                    level: 'friend',
+                    birthday: null,
+                    lastContact: '2026-04-05',
+                    temperatureHistory: [
+                        { date: '2026-03-15', score: 60, note: '打球' },
+                        { date: '2026-04-05', score: 65, note: '开黑' }
+                    ],
+                    createdAt: '2026-03-01'
+                }
+            ]
+        };
+
+        let selectedAvatar = '😊';
+        let selectedType = 'friend';
+        let selectedLevel = 'friend';
+        let currentDetailId = null;
+        let selectedTempChange = null;
+        let chartInstance = null;
+
+        function getCurrentDate() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function getDaysSince(dateStr) {
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+
+        function getCurrentScore(relationship) {
+            if (relationship.temperatureHistory.length === 0) return 60;
+            return relationship.temperatureHistory[relationship.temperatureHistory.length - 1].score;
+        }
+
+        function getStatus(relationship) {
+            const days = getDaysSince(relationship.lastContact);
+            const score = getCurrentScore(relationship);
+            const prevScore = relationship.temperatureHistory.length > 1 ? 
+                relationship.temperatureHistory[relationship.temperatureHistory.length - 2].score : score;
+
+            if (days >= 14 || score < 50) return { type: 'red', label: '需要关心' };
+            if (days >= 7 || score < 70) return { type: 'yellow', label: '保持联系' };
+            return { type: 'green', label: '关系健康' };
+        }
+
+        function getSuggestion(relationship) {
+            const days = getDaysSince(relationship.lastContact);
+            const score = getCurrentScore(relationship);
+            const today = getCurrentDate().slice(5);
+            const history = relationship.temperatureHistory;
+
+            if (relationship.birthday && relationship.birthday === today) {
+                return `🎂 今天是${relationship.name}的生日，送个祝福吧`;
+            }
+
+            if (days >= 14 && history.length >= 2 && history[history.length - 1].score < history[history.length - 2].score) {
+                return `💌 你和${relationship.name}已经两周没联系了，发个消息吧`;
+            }
+
+            if (days >= 7) {
+                return `📱 记得和${relationship.name}保持联系哦`;
+            }
+
+            if (history.length >= 3) {
+                const recent = history.slice(-3);
+                const isCooling = recent[0].score > recent[1].score && recent[1].score > recent[2].score;
+                if (isCooling) {
+                    return `💭 关系需要维护，找个机会聊聊？`;
+                }
+
+                const isWarming = recent[0].score < recent[1].score && recent[1].score < recent[2].score;
+                if (isWarming) {
+                    return `🎉 你们最近关系升温很快，可以约出来聚聚`;
+                }
+            }
+
+            if (relationship.type === 'lover' && days >= 10) {
+                return `💕 和${relationship.name}在一起很久了，记得制造小惊喜`;
+            }
+
+            if (relationship.type === 'family' && days >= 10) {
+                return `📞 给家人打个电话吧，他们在想你`;
+            }
+
+            if (score < 40) {
+                return `💔 这段关系好像遇到了问题，也许需要主动修复`;
+            }
+
+            if (score > 80) {
+                return `✨ 这段关系很健康，继续保持`;
+            }
+
+            return null;
+        }
+
+        function renderHome() {
+            const suggestionArea = document.getElementById('suggestion-area');
+            const relationshipsArea = document.getElementById('relationships-area');
+
+            let suggestions = [];
+            data.relationships.forEach(r => {
+                const s = getSuggestion(r);
+                if (s) suggestions.push(s);
+            });
+
+            if (suggestions.length > 0) {
+                suggestionArea.innerHTML = `
+                    <div class="suggestion-card">
+                        <div class="icon">💡</div>
+                        <p>${suggestions[0]}</p>
+                    </div>
+                `;
+            } else {
+                suggestionArea.innerHTML = '';
+            }
+
+            const red = [];
+            const yellow = [];
+            const green = [];
+            data.relationships.forEach(r => {
+                const status = getStatus(r);
+                if (status.type === 'red') red.push(r);
+                else if (status.type === 'yellow') yellow.push(r);
+                else green.push(r);
+            });
+
+            let html = '';
+
+            if (red.length > 0) {
+                html += `
+                    <div class="section-title">
+                        🔴 需要关心
+                        <span class="badge">${red.length}</span>
+                    </div>
+                    <div class="card-grid">
+                        ${red.map(r => renderCard(r, 'red')).join('')}
+                    </div>
+                `;
+            }
+
+            if (yellow.length > 0) {
+                html += `
+                    <div class="section-title">
+                        🟡 保持联系
+                        <span class="badge">${yellow.length}</span>
+                    </div>
+                    <div class="card-grid">
+                        ${yellow.map(r => renderCard(r, 'yellow')).join('')}
+                    </div>
+                `;
+            }
+
+            if (green.length > 0) {
+                html += `
+                    <div class="section-title">
+                        🟢 关系健康
+                        <span class="badge">${green.length}</span>
+                    </div>
+                    <div class="card-grid">
+                        ${green.map(r => renderCard(r, 'green')).join('')}
+                    </div>
+                `;
+            }
+
+            if (data.relationships.length === 0) {
+                html = `
+                    <div class="empty-state">
+                        <div class="icon">🌟</div>
+                        <p>还没有添加任何人<br>点击下方按钮开始吧</p>
+                    </div>
+                `;
+            }
+
+            relationshipsArea.innerHTML = html;
+        }
+
+        function renderCard(r, type) {
+            const days = getDaysSince(r.lastContact);
+            return `
+                <div class="relationship-card ${type}" onclick="openDetail('${r.id}')">
+                    <div class="avatar">${r.avatar}</div>
+                    <div class="name">${r.name}</div>
+                    <div class="meta">${days}天前</div>
+                </div>
+            `;
+        }
+
+        function renderAdd() {
+            const avatarSelector = document.getElementById('avatar-selector');
+            const typeSelector = document.getElementById('type-selector');
+            const levelSelector = document.getElementById('level-selector');
+
+            avatarSelector.innerHTML = AVATAR_OPTIONS.map(a => `
+                <div class="avatar-option ${a === selectedAvatar ? 'selected' : ''}" onclick="selectAvatar('${a}')">
+                    ${a}
+                </div>
+            `).join('');
+
+            typeSelector.innerHTML = Object.entries(RELATIONSHIP_TYPES).map(([key, val]) => `
+                <div class="type-option ${key === selectedType ? 'selected' : ''}" onclick="selectType('${key}')">
+                    <span class="icon">${val.icon}</span>
+                    <span class="label">${val.label}</span>
+                </div>
+            `).join('');
+
+            levelSelector.innerHTML = Object.entries(RELATIONSHIP_LEVELS).map(([key, val]) => `
+                <div class="level-option ${key === selectedLevel ? 'selected' : ''}" onclick="selectLevel('${key}')">
+                    <span class="label">${val.label}</span>
+                    <span style="color: #999;">${'★'.repeat(val.value + 1)}</span>
+                </div>
+            `).join('');
+        }
+
+        function selectAvatar(avatar) {
+            selectedAvatar = avatar;
+            renderAdd();
+        }
+
+        function selectType(type) {
+            selectedType = type;
+            renderAdd();
+        }
+
+        function selectLevel(level) {
+            selectedLevel = level;
+            renderAdd();
+        }
+
+        function renderDetail() {
+            const r = data.relationships.find(x => x.id === currentDetailId);
+            if (!r) return;
+
+            const content = document.getElementById('detail-content');
+            const typeInfo = RELATIONSHIP_TYPES[r.type];
+            const levelInfo = RELATIONSHIP_LEVELS[r.level];
+            const score = getCurrentScore(r);
+
+            content.innerHTML = `
+                <div class="detail-header">
+                    <div class="avatar breathing">${r.avatar}</div>
+                    <div class="name">${r.name}</div>
+                    <div class="tags">
+                        <span class="tag">${typeInfo.icon} ${typeInfo.label}</span>
+                        <span class="tag">${'★'.repeat(levelInfo.value + 1)} ${levelInfo.label}</span>
+                        <span class="tag">🌡️ ${score}分</span>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3>📈 温度曲线</h3>
+                    <canvas id="temp-chart"></canvas>
+                </div>
+
+                <div class="temperature-update">
+                    <h3>✨ 和${r.name}的关系最近好吗？</h3>
+                    <div class="temperature-options">
+                        <div class="temp-option" onclick="selectTempChange(-10)">
+                            <span class="emoji">❄️</span>
+                            <span class="label">变冷</span>
+                        </div>
+                        <div class="temp-option" onclick="selectTempChange(0)">
+                            <span class="emoji">😊</span>
+                            <span class="label">没变化</span>
+                        </div>
+                        <div class="temp-option" onclick="selectTempChange(10)">
+                            <span class="emoji">☀️</span>
+                            <span class="label">变暖</span>
+                        </div>
+                    </div>
+                    <textarea class="note-input" id="temp-note" placeholder="今天发生啥了？（可选）"></textarea>
+                    <button class="submit-btn" onclick="addTemperature()">记录</button>
+                </div>
+
+                <div class="history-list">
+                    <h3>📝 历史记录</h3>
+                    ${r.temperatureHistory.slice().reverse().map(h => `
+                        <div class="history-item">
+                            <div class="date">${h.date}</div>
+                            <div class="score">🌡️ ${h.score}分</div>
+                            ${h.note ? `<div class="note">${h.note}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            renderChart(r);
+        }
+
+        function renderChart(relationship) {
+            const ctx = document.getElementById('temp-chart');
+            if (!ctx) return;
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            const history = relationship.temperatureHistory;
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: history.map(h => h.date.slice(5)),
+                    datasets: [{
+                        label: '温度',
+                        data: history.map(h => h.score),
+                        borderColor: '#FF9F43',
+                        backgroundColor: 'rgba(255, 159, 67, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#FF9F43',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function selectTempChange(change) {
+            selectedTempChange = change;
+            document.querySelectorAll('.temp-option').forEach((el, i) => {
+                const changes = [-10, 0, 10];
+                el.classList.toggle('selected', changes[i] === change);
+            });
+        }
+
+        function addTemperature() {
+            if (selectedTempChange === null) {
+                alert('请选择温度变化');
+                return;
+            }
+
+            const r = data.relationships.find(x => x.id === currentDetailId);
+            const currentScore = getCurrentScore(r);
+            const newScore = Math.max(0, Math.min(100, currentScore + selectedTempChange));
+            const note = document.getElementById('temp-note').value;
+
+            r.temperatureHistory.push({
+                date: getCurrentDate(),
+                score: newScore,
+                note: note
+            });
+            r.lastContact = getCurrentDate();
+
+            saveData();
+            selectedTempChange = null;
+            renderDetail();
+        }
+
+        function openDetail(id) {
+            currentDetailId = id;
+            selectedTempChange = null;
+            navigate('detail');
+        }
+
+        function navigate(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(`${page}-page`).classList.add('active');
+
+            document.getElementById('add-btn').style.display = page === 'home' ? 'flex' : 'none';
+
+            if (page === 'home') renderHome();
+            else if (page === 'add') renderAdd();
+            else if (page === 'detail') renderDetail();
+        }
+
+        function saveData() {
+            localStorage.setItem('warmFlow', JSON.stringify(data));
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('warmFlow');
+            if (saved) {
+                data = JSON.parse(saved);
+            }
+        }
+
+        document.getElementById('add-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name-input').value.trim();
+            const birthday = document.getElementById('birthday-input').value.trim() || null;
+
+            if (!name) {
+                alert('请输入昵称');
+                return;
+            }
+
+            const newRelationship = {
+                id: Date.now().toString(),
+                name,
+                avatar: selectedAvatar,
+                type: selectedType,
+                level: selectedLevel,
+                birthday,
+                lastContact: getCurrentDate(),
+                temperatureHistory: [{
+                    date: getCurrentDate(),
+                    score: 60,
+                    note: '刚认识'
+                }],
+                createdAt: getCurrentDate()
+            };
+
+            data.relationships.push(newRelationship);
+            saveData();
+
+            document.getElementById('name-input').value = '';
+            document.getElementById('birthday-input').value = '';
+            selectedAvatar = '😊';
+            selectedType = 'friend';
+            selectedLevel = 'friend';
+
+            navigate('home');
+        });
+
+        loadData();
+        renderHome();
+    </script>
+</body>
+</html>
