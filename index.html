@@ -7,17 +7,20 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         :root {
-            --bg-primary: #1A1B2E;
-            --bg-secondary: #2A2B4A;
-            --primary: #FF8A80;
-            --secondary: #FFB74D;
-            --text-primary: #F5F5F7;
-            --text-secondary: #A0A4C0;
-            --text-tertiary: #6C7093;
-            --glass-bg: rgba(42, 43, 74, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --bg-primary: #12151C;
+            --bg-secondary: #1E222C;
+            --primary: #64B5F6;
+            --accent: #FFAB91;
+            --text-primary: #ECEFF4;
+            --text-secondary: #A3B8CC;
+            --text-tertiary: #6B7280;
+            --status-red: #EF5350;
+            --status-yellow: #FFD54F;
+            --status-green: #66BB6A;
+            --glass-bg: rgba(30, 34, 44, 0.7);
+            --glass-border: rgba(100, 181, 246, 0.2);
             --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
-            --shadow-glow: 0 0 20px rgba(255, 138, 128, 0.3);
+            --shadow-glow: 0 0 20px rgba(100, 181, 246, 0.3);
             --radius-sm: 12px;
             --radius-md: 16px;
             --radius-lg: 24px;
@@ -60,7 +63,7 @@
         .blob-1 {
             width: 400px;
             height: 400px;
-            background: linear-gradient(135deg, #FF8A80 0%, #FF6B9D 100%);
+            background: linear-gradient(135deg, #64B5F6 0%, #2196F3 100%);
             top: -150px;
             right: -100px;
             animation: float1 8s ease-in-out infinite;
@@ -69,7 +72,7 @@
         .blob-2 {
             width: 350px;
             height: 350px;
-            background: linear-gradient(135deg, #6C5CE7 0%, #3023AE 100%);
+            background: linear-gradient(135deg, #FFAB91 0%, #FF8A65 100%);
             bottom: -120px;
             left: -80px;
             animation: float2 10s ease-in-out infinite;
@@ -78,11 +81,18 @@
         .blob-3 {
             width: 250px;
             height: 250px;
-            background: linear-gradient(135deg, #FFB74D 0%, #FFA726 100%);
+            background: linear-gradient(135deg, #4FC3F7 0%, #03A9F4 100%);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             animation: float3 12s ease-in-out infinite;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
         }
 
         @keyframes float1 {
@@ -98,6 +108,11 @@
         @keyframes float3 {
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
             50% { transform: translate(-50%, -50%) scale(1.1) rotate(5deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
         }
 
         .container {
@@ -119,11 +134,11 @@
             font-weight: 700;
             letter-spacing: 4px;
             margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 20px rgba(255, 138, 128, 0.4);
+            text-shadow: 0 0 20px rgba(100, 181, 246, 0.4);
         }
 
         .header-subtitle {
@@ -228,21 +243,21 @@
         }
 
         .relationship-card.red::before {
-            background: linear-gradient(180deg, #FF6B6B 0%, #FF8787 100%);
+            background: linear-gradient(180deg, var(--status-red) 0%, #FF5252 100%);
         }
 
         .relationship-card.yellow::before {
-            background: linear-gradient(180deg, #FFB74D 0%, #FFCC80 100%);
+            background: linear-gradient(180deg, var(--status-yellow) 0%, #FFCA28 100%);
         }
 
         .relationship-card.green::before {
-            background: linear-gradient(180deg, #4DD0E1 0%, #4FC3F7 100%);
+            background: linear-gradient(180deg, var(--status-green) 0%, #4CAF50 100%);
         }
 
         .relationship-card:hover {
             transform: translateY(-2px);
             box-shadow: var(--shadow-soft), var(--shadow-glow);
-            border-color: rgba(255, 138, 128, 0.3);
+            border-color: rgba(100, 181, 246, 0.3);
         }
 
         .relationship-card:active {
@@ -302,18 +317,18 @@
         }
 
         .card-score.red {
-            background: rgba(255, 107, 107, 0.2);
-            color: #FF6B6B;
+            background: rgba(239, 83, 80, 0.2);
+            color: var(--status-red);
         }
 
         .card-score.yellow {
-            background: rgba(255, 183, 77, 0.2);
-            color: var(--secondary);
+            background: rgba(255, 213, 79, 0.2);
+            color: var(--status-yellow);
         }
 
         .card-score.green {
-            background: rgba(77, 208, 225, 0.2);
-            color: #4DD0E1;
+            background: rgba(102, 187, 106, 0.2);
+            color: var(--status-green);
         }
 
         .card-actions {
@@ -326,7 +341,7 @@
             height: 36px;
             border-radius: var(--radius-sm);
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--primary);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -336,7 +351,7 @@
         }
 
         .quick-btn:hover {
-            background: rgba(255, 138, 128, 0.2);
+            background: rgba(100, 181, 246, 0.2);
             border-color: var(--primary);
             transform: scale(1.05);
         }
@@ -367,7 +382,7 @@
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, #FF8A65 100%);
             color: white;
             border: none;
             border-radius: 50px;
@@ -375,7 +390,7 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: var(--shadow-soft), var(--shadow-glow);
+            box-shadow: var(--shadow-soft), 0 0 20px rgba(255, 171, 145, 0.4);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -385,7 +400,7 @@
 
         .floating-btn:hover {
             transform: translateX(-50%) scale(1.05);
-            box-shadow: 0 8px 24px rgba(255, 138, 128, 0.45);
+            box-shadow: 0 8px 24px rgba(255, 171, 145, 0.45);
         }
 
         .floating-btn:active {
@@ -463,7 +478,7 @@
             height: 36px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--primary);
             cursor: pointer;
             font-size: 20px;
             display: flex;
@@ -473,7 +488,7 @@
         }
 
         .modal-close:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(100, 181, 246, 0.2);
         }
 
         .modal-content {
@@ -537,13 +552,13 @@
         }
 
         .avatar-option:hover {
-            background: rgba(255, 138, 128, 0.1);
+            background: rgba(100, 181, 246, 0.1);
             transform: scale(1.05);
         }
 
         .avatar-option.selected {
             border-color: var(--primary);
-            background: rgba(255, 138, 128, 0.2);
+            background: rgba(100, 181, 246, 0.2);
         }
 
         .type-row {
@@ -563,12 +578,12 @@
         }
 
         .type-option:hover {
-            background: rgba(255, 138, 128, 0.1);
+            background: rgba(100, 181, 246, 0.1);
         }
 
         .type-option.selected {
             border-color: var(--primary);
-            background: rgba(255, 138, 128, 0.2);
+            background: rgba(100, 181, 246, 0.2);
         }
 
         .type-icon {
@@ -602,12 +617,12 @@
         }
 
         .level-option:hover {
-            background: rgba(255, 138, 128, 0.1);
+            background: rgba(100, 181, 246, 0.1);
         }
 
         .level-option.selected {
             border-color: var(--primary);
-            background: rgba(255, 138, 128, 0.2);
+            background: rgba(100, 181, 246, 0.2);
         }
 
         .level-name {
@@ -622,7 +637,7 @@
         }
 
         .level-option.selected .level-stars {
-            color: var(--secondary);
+            color: var(--primary);
         }
 
         .modal-footer {
@@ -633,7 +648,7 @@
         .btn-primary {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, #FF8A65 100%);
             color: white;
             border: none;
             border-radius: var(--radius-sm);
@@ -646,7 +661,7 @@
 
         .btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: var(--shadow-soft), var(--shadow-glow);
+            box-shadow: var(--shadow-soft), 0 0 20px rgba(255, 171, 145, 0.4);
         }
 
         .btn-primary:active {
@@ -698,13 +713,18 @@
         }
 
         .detail-tag.primary {
-            background: rgba(255, 138, 128, 0.2);
+            background: rgba(100, 181, 246, 0.2);
             color: var(--primary);
+        }
+
+        .detail-tag.accent {
+            background: rgba(255, 171, 145, 0.2);
+            color: var(--accent);
         }
 
         .chart-card {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(100, 181, 246, 0.2);
             border-radius: var(--radius-md);
             padding: 20px;
             margin-bottom: 20px;
@@ -719,7 +739,7 @@
 
         .temp-update-section {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(100, 181, 246, 0.2);
             border-radius: var(--radius-md);
             padding: 20px;
             margin-bottom: 20px;
@@ -750,12 +770,12 @@
         }
 
         .temp-option:hover {
-            border-color: rgba(255, 138, 128, 0.3);
+            border-color: rgba(100, 181, 246, 0.3);
         }
 
         .temp-option.selected {
             border-color: var(--primary);
-            background: rgba(255, 138, 128, 0.2);
+            background: rgba(100, 181, 246, 0.2);
         }
 
         .temp-emoji {
@@ -796,7 +816,7 @@
 
         .history-section {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(100, 181, 246, 0.2);
             border-radius: var(--radius-md);
             padding: 20px;
         }
@@ -817,7 +837,7 @@
         .history-item {
             padding: 14px;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(100, 181, 246, 0.1);
             border-radius: var(--radius-sm);
         }
 
@@ -832,8 +852,8 @@
             align-items: center;
             gap: 4px;
             padding: 4px 10px;
-            background: rgba(255, 138, 128, 0.2);
-            color: var(--primary);
+            background: rgba(255, 171, 145, 0.2);
+            color: var(--accent);
             border-radius: 8px;
             font-size: 12px;
             font-weight: 600;
@@ -856,8 +876,8 @@
         }
 
         @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(255, 138, 128, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(255, 138, 128, 0.5); }
+            0%, 100% { box-shadow: 0 0 20px rgba(100, 181, 246, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(100, 181, 246, 0.5); }
         }
 
         .glowing {
@@ -1350,7 +1370,7 @@
                     <div class="detail-tags">
                         <span class="detail-tag primary">${typeInfo.icon} ${typeInfo.label}</span>
                         <span class="detail-tag">★${'★'.repeat(levelInfo.value)} ${levelInfo.label}</span>
-                        <span class="detail-tag primary">🌡️ ${score}分</span>
+                        <span class="detail-tag accent">🌡️ ${score}分</span>
                     </div>
                 </div>
 
@@ -1392,12 +1412,12 @@
                     datasets: [{
                         label: '温度',
                         data: history.map(h => h.score),
-                        borderColor: '#FF8A80',
-                        backgroundColor: 'rgba(255, 138, 128, 0.2)',
+                        borderColor: '#64B5F6',
+                        backgroundColor: 'rgba(100, 181, 246, 0.2)',
                         fill: true,
                         tension: 0.4,
-                        pointBackgroundColor: '#FF8A80',
-                        pointBorderColor: '#2A2B4A',
+                        pointBackgroundColor: '#FFAB91',
+                        pointBorderColor: '#1E222C',
                         pointBorderWidth: 2,
                         pointRadius: 6
                     }]
@@ -1412,11 +1432,11 @@
                             min: 0,
                             max: 100,
                             grid: { color: 'rgba(255, 255, 255, 0.1)' },
-                            ticks: { color: '#A0A4C0' }
+                            ticks: { color: '#A3B8CC' }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#A0A4C0' }
+                            ticks: { color: '#A3B8CC' }
                         }
                     }
                 }
