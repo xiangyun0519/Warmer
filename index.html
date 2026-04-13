@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蓝境 - 让每一段关系都被看见</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B26;
+            --primary: #58A6FF;
+            --secondary: #79B8FF;
+            --text-primary: #E6EDF3;
+            --text-secondary: #8B949E;
+            --text-tertiary: #6B7280;
+            --status-red: #F85149;
+            --status-yellow: #D29922;
+            --status-green: #3FB950;
+            --glass-bg: rgba(22, 27, 38, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow-glow: 0 0 20px rgba(88, 166, 255, 0.3);
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-primary);
+            min-height: 100vh;
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .background-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #64B5F6 0%, #2196F3 100%);
+            top: -150px;
+            right: -100px;
+            animation: float1 8s ease-in-out infinite;
+        }
+
+        .blob-2 {
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, #79B8FF 0%, #58A6FF 100%);
+            bottom: -120px;
+            left: -80px;
+            animation: float2 10s ease-in-out infinite;
+        }
+
+        .blob-3 {
+            width: 250px;
+            height: 250px;
+            background: linear-gradient(135deg, #4FC3F7 0%, #03A9F4 100%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: float3 12s ease-in-out infinite;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, 20px) scale(1.05); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, -30px) scale(1.08); }
+        }
+
+        @keyframes float3 {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1) rotate(5deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+            padding-bottom: 100px;
+        }
+
+        .header {
+            padding: 60px 24px 32px;
+            text-align: center;
+        }
+
+        .header-logo {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 20px rgba(88, 166, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #headerLogo {
+            vertical-align: middle;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        .suggestion-card {
+            margin: 0 24px 32px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 20px 24px;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .suggestion-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .suggestion-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .suggestion-text {
+            font-size: 15px;
+            line-height: 1.6;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-count {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .card-list {
+            padding: 0 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .relationship-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            box-shadow: var(--shadow-soft);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .relationship-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+        }
+
+        .relationship-card.red::before {
+            background: linear-gradient(180deg, var(--status-red) 0%, #FF5252 100%);
+        }
+
+        .relationship-card.yellow::before {
+            background: linear-gradient(180deg, var(--status-yellow) 0%, #FFCA28 100%);
+        }
+
+        .relationship-card.green::before {
+            background: linear-gradient(180deg, var(--status-green) 0%, #4CAF50 100%);
+        }
+
+        .relationship-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .relationship-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-soft), var(--shadow-glow);
+            border-color: rgba(88, 166, 255, 0.4);
+        }
+
+        .relationship-card:active {
+            transform: translateY(0);
+            transition: all 0.1s ease;
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .card-avatar {
+            font-size: 44px;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .card-tag {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-score {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
+
+        .card-score.red {
+            background: rgba(239, 83, 80, 0.2);
+            color: var(--status-red);
+        }
+
+        .card-score.yellow {
+            background: rgba(255, 213, 79, 0.2);
+            color: var(--status-yellow);
+        }
+
+        .card-score.green {
+            background: rgba(102, 187, 106, 0.2);
+            color: var(--status-green);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .quick-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .quick-btn:hover {
+            background: rgba(88, 166, 255, 0.2);
+            border-color: var(--primary);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.3);
+        }
+
+        .quick-btn:hover::before {
+            left: 100%;
+        }
+
+        .quick-btn:active {
+            transform: scale(0.95);
+            transition: all 0.1s ease;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 24px;
+            opacity: 0.8;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .empty-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 32px;
+            max-width: 320px;
+        }
+
+        .empty-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow-soft), 0 0 20px rgba(88, 166, 255, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .empty-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(88, 166, 255, 0.45);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow-soft), 0 0 20px rgba(88, 166, 255, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+        }
+
+        .floating-btn:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 8px 24px rgba(88, 166, 255, 0.45);
+        }
+
+        .floating-btn:active {
+            transform: translateX(-50%) scale(0.98);
+        }
+
+        .floating-btn-icon {
+            font-size: 22px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            display: flex;
+            flex-direction: column;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            position: relative;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: var(--text-tertiary);
+            border-radius: 2px;
+            margin: 12px auto;
+        }
+
+        .modal-header {
+            padding: 20px 24px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--primary);
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(100, 181, 246, 0.2);
+        }
+
+        .modal-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            font-family: inherit;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.3);
+        }
+
+        .form-input::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .avatar-option {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .avatar-option:hover {
+            background: rgba(100, 181, 246, 0.1);
+            transform: scale(1.05);
+        }
+
+        .avatar-option.selected {
+            border-color: var(--primary);
+            background: rgba(100, 181, 246, 0.2);
+        }
+
+        .type-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .type-option {
+            flex: 1;
+            padding: 16px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .type-option:hover {
+            background: rgba(100, 181, 246, 0.1);
+        }
+
+        .type-option.selected {
+            border-color: var(--primary);
+            background: rgba(100, 181, 246, 0.2);
+        }
+
+        .type-icon {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .type-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .level-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .level-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .level-option:hover {
+            background: rgba(100, 181, 246, 0.1);
+        }
+
+        .level-option.selected {
+            border-color: var(--primary);
+            background: rgba(100, 181, 246, 0.2);
+        }
+
+        .level-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .level-stars {
+            color: var(--text-tertiary);
+            letter-spacing: 2px;
+        }
+
+        .level-option.selected .level-stars {
+            color: var(--primary);
+        }
+
+        .modal-footer {
+            padding: 16px 24px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-soft), 0 0 20px rgba(88, 166, 255, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .detail-header-section {
+            text-align: center;
+            padding: 8px 0 24px;
+        }
+
+        .detail-avatar {
+            font-size: 72px;
+            margin-bottom: 16px;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .detail-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .detail-tags {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .detail-tag {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .detail-tag.primary {
+            background: rgba(88, 166, 255, 0.2);
+            color: var(--primary);
+        }
+
+        .detail-tag.accent {
+            background: rgba(88, 166, 255, 0.2);
+            color: var(--primary);
+        }
+
+        .chart-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .temp-update-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .temp-update-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .temp-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .temp-option {
+            flex: 1;
+            padding: 16px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .temp-option:hover {
+            border-color: rgba(100, 181, 246, 0.3);
+        }
+
+        .temp-option.selected {
+            border-color: var(--primary);
+            background: rgba(100, 181, 246, 0.2);
+        }
+
+        .temp-emoji {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .temp-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .note-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+            font-family: inherit;
+            resize: none;
+            min-height: 80px;
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
+
+        .note-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .note-textarea::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .history-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+        }
+
+        .history-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .history-item {
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+        }
+
+        .history-date {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-bottom: 6px;
+        }
+
+        .history-score {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: rgba(88, 166, 255, 0.2);
+            color: var(--primary);
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .history-note {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .breathing {
+            animation: breathe 2.5s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(88, 166, 255, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(88, 166, 255, 0.5); }
+        }
+
+        .glowing {
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .onboarding-container {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .onboarding-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 100px 24px 200px;
+            text-align: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .onboarding-slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .onboarding-icon {
+            font-size: 100px;
+            margin-bottom: 32px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .onboarding-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .onboarding-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .onboarding-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px 24px;
+            background: linear-gradient(transparent, var(--bg-primary));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .onboarding-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .onboarding-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-tertiary);
+            transition: all 0.3s ease;
+        }
+
+        .onboarding-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: var(--primary);
+        }
+
+        .onboarding-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .onboarding-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft), 0 0 20px rgba(88, 166, 255, 0.4);
+        }
+
+        .onboarding-finish {
+            display: none;
+        }
+
+        .onboarding-finish.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-decoration">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-logo">
+                <canvas id="headerLogo" width="48" height="48"></canvas>
+                <span style="margin-left: 12px;">蓝境</span>
+            </div>
+            <div class="header-subtitle">让每一段关系都被看见</div>
+        </div>
+
+        <div id="suggestion-area"></div>
+
+        <div id="relationships-area"></div>
+    </div>
+
+    <button class="floating-btn" onclick="openAddModal()">
+        <span class="floating-btn-icon">+</span>
+        添加重要的人
+    </button>
+
+    <div class="modal-overlay" id="add-modal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <div class="modal-title">添加重要的人</div>
+                <button class="modal-close" onclick="closeAddModal()">×</button>
+            </div>
+            <div class="modal-content">
+                <div class="form-group">
+                    <label class="form-label">选择头像</label>
+                    <div class="avatar-grid" id="avatar-grid"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">昵称</label>
+                    <input type="text" class="form-input" id="name-input" placeholder="给Ta起个名字">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">关系类型</label>
+                    <div class="type-row" id="type-row"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">关系等级</label>
+                    <div class="level-list" id="level-list"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">生日（可选）</label>
+                    <input type="text" class="form-input" id="birthday-input" placeholder="格式：05-20">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="addRelationship()">添加</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="detail-modal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <div class="modal-title">关系详情</div>
+                <button class="modal-close" onclick="closeDetailModal()">×</button>
+            </div>
+            <div class="modal-content" id="detail-content"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="quick-modal">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <div class="modal-title">记录温度</div>
+                <button class="modal-close" onclick="closeQuickModal()">×</button>
+            </div>
+            <div class="modal-content" id="quick-content"></div>
+        </div>
+    </div>
+
+    <div class="onboarding-overlay" id="onboarding-overlay">
+        <div class="onboarding-container">
+            <div class="onboarding-slide" id="onboarding-slide-1">
+                <div class="onboarding-icon">🌊</div>
+                <h2 class="onboarding-title">欢迎来到蓝境</h2>
+                <p class="onboarding-text">让每一段关系都被看见</p>
+            </div>
+            <div class="onboarding-slide" id="onboarding-slide-2">
+                <div class="onboarding-icon">📊</div>
+                <h2 class="onboarding-title">温度曲线</h2>
+                <p class="onboarding-text">跟踪关系的温度变化，了解关系的发展趋势</p>
+            </div>
+            <div class="onboarding-slide" id="onboarding-slide-3">
+                <div class="onboarding-icon">💡</div>
+                <h2 class="onboarding-title">个性化建议</h2>
+                <p class="onboarding-text">根据关系状态，获得针对性的维护建议</p>
+            </div>
+            <div class="onboarding-slide" id="onboarding-slide-4">
+                <div class="onboarding-icon">✨</div>
+                <h2 class="onboarding-title">开始使用</h2>
+                <p class="onboarding-text">添加你重要的人，开始维护你的关系网络</p>
+            </div>
+            <div class="onboarding-nav">
+                <div class="onboarding-dots">
+                    <span class="onboarding-dot active"></span>
+                    <span class="onboarding-dot"></span>
+                    <span class="onboarding-dot"></span>
+                    <span class="onboarding-dot"></span>
+                </div>
+                <button class="onboarding-btn" id="onboarding-next">下一步</button>
+                <button class="onboarding-btn onboarding-finish" id="onboarding-finish">开始使用</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const RELATIONSHIP_TYPES = {
+            friend: { label: '朋友', icon: '👥' },
+            lover: { label: '恋人', icon: '❤️' },
+            family: { label: '家人', icon: '🏠' }
+        };
+
+        const RELATIONSHIP_LEVELS = {
+            stranger: { label: '陌生', value: 0 },
+            acquaintance: { label: '认识', value: 1 },
+            friend: { label: '熟识', value: 2 },
+            close: { label: '亲密', value: 3 },
+            best: { label: '挚友', value: 4 }
+        };
+
+        const AVATAR_OPTIONS = ['😊', '🤝', '❤️', '🎉', '🎁', '🌟', '🌸', '☀️', '🌙', '🔥', '💫', '🌈', '🎨', '🎵', '🏠', '👨‍👩‍👧', '🤗', '💪', '🎯', '📚'];
+
+        let data = {
+            relationships: [
+                {
+                    id: '1',
+                    name: '小明',
+                    avatar: '🤝',
+                    type: 'friend',
+                    level: 'close',
+                    birthday: '04-13',
+                    lastContact: '2026-03-30',
+                    temperatureHistory: [
+                        { date: '2026-03-01', score: 70, note: '一起吃饭' },
+                        { date: '2026-03-15', score: 65, note: '好久没见' },
+                        { date: '2026-03-30', score: 55, note: '刚吵完架' }
+                    ],
+                    createdAt: '2026-01-15'
+                },
+                {
+                    id: '2',
+                    name: '老妈',
+                    avatar: '🏠',
+                    type: 'family',
+                    level: 'best',
+                    birthday: '08-15',
+                    lastContact: '2026-03-20',
+                    temperatureHistory: [
+                        { date: '2026-02-01', score: 85, note: '打电话回家' },
+                        { date: '2026-03-01', score: 80, note: '视频通话' },
+                        { date: '2026-03-20', score: 75, note: '好久没打了' }
+                    ],
+                    createdAt: '2026-01-01'
+                },
+                {
+                    id: '3',
+                    name: '小红',
+                    avatar: '❤️',
+                    type: 'lover',
+                    level: 'best',
+                    birthday: '12-25',
+                    lastContact: '2026-04-10',
+                    temperatureHistory: [
+                        { date: '2026-03-01', score: 75, note: '约会' },
+                        { date: '2026-03-20', score: 82, note: '一起看电影' },
+                        { date: '2026-04-10', score: 88, note: '收到礼物' }
+                    ],
+                    createdAt: '2026-02-14'
+                },
+                {
+                    id: '4',
+                    name: '阿杰',
+                    avatar: '👥',
+                    type: 'friend',
+                    level: 'friend',
+                    birthday: null,
+                    lastContact: '2026-04-05',
+                    temperatureHistory: [
+                        { date: '2026-03-15', score: 60, note: '打球' },
+                        { date: '2026-04-05', score: 65, note: '开黑' }
+                    ],
+                    createdAt: '2026-03-01'
+                }
+            ]
+        };
+
+        let selectedAvatar = '😊';
+        let selectedType = 'friend';
+        let selectedLevel = 'friend';
+        let currentDetailId = null;
+        let quickTempChange = null;
+        let chartInstance = null;
+        let currentOnboardingSlide = 0;
+        const totalOnboardingSlides = 4;
+
+        function drawHeaderLogo() {
+            const canvas = document.getElementById('headerLogo');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const centerX = 24;
+            const centerY = 24;
+            const radius = 20;
+            
+            // 清除画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制主圆形
+            const gradientCircle = ctx.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+            gradientCircle.addColorStop(0, '#58A6FF');
+            gradientCircle.addColorStop(1, '#79B8FF');
+            
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.fillStyle = gradientCircle;
+            ctx.fill();
+            
+            // 绘制内部波浪线
+            ctx.beginPath();
+            ctx.moveTo(centerX - 14, centerY);
+            
+            for (let i = -14; i <= 14; i += 4) {
+                const y = centerY + Math.sin(i * 0.3) * 3;
+                ctx.lineTo(centerX + i, y);
+            }
+            
+            ctx.strokeStyle = '#0D1117';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            
+            // 绘制连接点
+            const points = [
+                { x: centerX - 8, y: centerY - 4 },
+                { x: centerX, y: centerY + 6 },
+                { x: centerX + 8, y: centerY - 2 }
+            ];
+            
+            points.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = '#0D1117';
+                ctx.fill();
+            });
+        }
+
+        function getCurrentDate() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function getDaysSince(dateStr) {
+            const date = new Date(dateStr);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays;
+        }
+
+        function getCurrentScore(relationship) {
+            if (relationship.temperatureHistory.length === 0) return 60;
+            return relationship.temperatureHistory[relationship.temperatureHistory.length - 1].score;
+        }
+
+        function getStatus(relationship) {
+            const days = getDaysSince(relationship.lastContact);
+            const score = getCurrentScore(relationship);
+
+            if (days >= 14 || score < 50) return { type: 'red', label: '需要关心' };
+            if (days >= 7 || score < 70) return { type: 'yellow', label: '保持联系' };
+            return { type: 'green', label: '关系健康' };
+        }
+
+        function getSuggestion(relationship) {
+            const days = getDaysSince(relationship.lastContact);
+            const score = getCurrentScore(relationship);
+            const today = getCurrentDate().slice(5);
+            const history = relationship.temperatureHistory;
+
+            if (relationship.birthday && relationship.birthday === today) {
+                return `🎂 今天是${relationship.name}的生日，送个祝福吧`;
+            }
+
+            if (days >= 14 && history.length >= 2 && history[history.length - 1].score < history[history.length - 2].score) {
+                return `💌 你和${relationship.name}已经两周没联系了，发个消息吧`;
+            }
+
+            if (days >= 7) {
+                return `📱 记得和${relationship.name}保持联系哦`;
+            }
+
+            if (history.length >= 3) {
+                const recent = history.slice(-3);
+                const isCooling = recent[0].score > recent[1].score && recent[1].score > recent[2].score;
+                if (isCooling) {
+                    return `💭 关系需要维护，找个机会聊聊？`;
+                }
+
+                const isWarming = recent[0].score < recent[1].score && recent[1].score < recent[2].score;
+                if (isWarming) {
+                    return `🎉 你们最近关系升温很快，可以约出来聚聚`;
+                }
+            }
+
+            if (relationship.type === 'lover' && days >= 10) {
+                return `💕 和${relationship.name}在一起很久了，记得制造小惊喜`;
+            }
+
+            if (relationship.type === 'family' && days >= 10) {
+                return `📞 给家人打个电话吧，他们在想你`;
+            }
+
+            if (score < 40) {
+                return `💔 这段关系好像遇到了问题，也许需要主动修复`;
+            }
+
+            if (score > 80) {
+                return `✨ 这段关系很健康，继续保持`;
+            }
+
+            return null;
+        }
+
+        function renderHome() {
+            const suggestionArea = document.getElementById('suggestion-area');
+            const relationshipsArea = document.getElementById('relationships-area');
+
+            let suggestions = [];
+            data.relationships.forEach(r => {
+                const s = getSuggestion(r);
+                if (s) suggestions.push(s);
+            });
+
+            if (suggestions.length > 0) {
+                suggestionArea.innerHTML = `
+                    <div class="suggestion-card">
+                        <div class="suggestion-icon">💡</div>
+                        <div class="suggestion-text">${suggestions[0]}</div>
+                    </div>
+                `;
+            } else {
+                suggestionArea.innerHTML = '';
+            }
+
+            const red = [];
+            const yellow = [];
+            const green = [];
+            data.relationships.forEach(r => {
+                const status = getStatus(r);
+                if (status.type === 'red') red.push(r);
+                else if (status.type === 'yellow') yellow.push(r);
+                else green.push(r);
+            });
+
+            let html = '';
+
+            if (red.length > 0) {
+                html += `
+                    <div class="section">
+                        <div class="section-header">
+                            <div class="section-title">
+                                🔴 需要关心
+                                <span class="section-count">${red.length}</span>
+                            </div>
+                        </div>
+                        <div class="card-list">
+                            ${red.map(r => renderCard(r, 'red')).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (yellow.length > 0) {
+                html += `
+                    <div class="section">
+                        <div class="section-header">
+                            <div class="section-title">
+                                🟡 保持联系
+                                <span class="section-count">${yellow.length}</span>
+                            </div>
+                        </div>
+                        <div class="card-list">
+                            ${yellow.map(r => renderCard(r, 'yellow')).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (green.length > 0) {
+                html += `
+                    <div class="section">
+                        <div class="section-header">
+                            <div class="section-title">
+                                🟢 关系健康
+                                <span class="section-count">${green.length}</span>
+                            </div>
+                        </div>
+                        <div class="card-list">
+                            ${green.map(r => renderCard(r, 'green')).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (data.relationships.length === 0) {
+                html = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🌊</div>
+                        <div class="empty-title">欢迎来到蓝境</div>
+                        <div class="empty-text">开始添加你重要的关系，让每一段关系都被看见</div>
+                        <button class="empty-btn" onclick="openAddModal()">添加重要的人</button>
+                    </div>
+                `;
+            }
+
+            relationshipsArea.innerHTML = html;
+        }
+
+        function renderCard(r, type) {
+            const days = getDaysSince(r.lastContact);
+            const score = getCurrentScore(r);
+            const typeInfo = RELATIONSHIP_TYPES[r.type];
+            
+            return `
+                <div class="relationship-card ${type}" onclick="openDetailModal('${r.id}')">
+                    <div class="card-content">
+                        <div class="card-avatar">${r.avatar}</div>
+                        <div class="card-info">
+                            <div class="card-name">${r.name}</div>
+                            <div class="card-meta">
+                                <span class="card-tag">${typeInfo.icon} ${typeInfo.label}</span>
+                                <span class="card-tag">${days}天前</span>
+                                <span class="card-score ${type}">🌡️ ${score}分</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="quick-btn" onclick="event.stopPropagation(); openQuickModal('${r.id}')">✏️</button>
+                            <button class="quick-btn" onclick="event.stopPropagation(); openDetailModal('${r.id}')">📊</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openAddModal() {
+            selectedAvatar = '😊';
+            selectedType = 'friend';
+            selectedLevel = 'friend';
+            renderAddModalContent();
+            const modal = document.getElementById('add-modal');
+            modal.classList.add('active');
+        }
+
+        function closeAddModal() {
+            const modal = document.getElementById('add-modal');
+            modal.classList.remove('active');
+            document.getElementById('name-input').value = '';
+            document.getElementById('birthday-input').value = '';
+        }
+
+        function renderAddModalContent() {
+            const avatarGrid = document.getElementById('avatar-grid');
+            const typeRow = document.getElementById('type-row');
+            const levelList = document.getElementById('level-list');
+
+            avatarGrid.innerHTML = AVATAR_OPTIONS.map(a => `
+                <div class="avatar-option ${a === selectedAvatar ? 'selected' : ''}" 
+                     onclick="selectAddAvatar('${a}')">${a}</div>
+            `).join('');
+
+            typeRow.innerHTML = Object.entries(RELATIONSHIP_TYPES).map(([key, val]) => `
+                <div class="type-option ${key === selectedType ? 'selected' : ''}"
+                     onclick="selectAddType('${key}')">
+                    <span class="type-icon">${val.icon}</span>
+                    <span class="type-label">${val.label}</span>
+                </div>
+            `).join('');
+
+            levelList.innerHTML = Object.entries(RELATIONSHIP_LEVELS).map(([key, val]) => `
+                <div class="level-option ${key === selectedLevel ? 'selected' : ''}"
+                     onclick="selectAddLevel('${key}')">
+                    <span class="level-name">${val.label}</span>
+                    <span class="level-stars">${'★'.repeat(val.value + 1)}</span>
+                </div>
+            `).join('');
+        }
+
+        function selectAddAvatar(avatar) {
+            selectedAvatar = avatar;
+            renderAddModalContent();
+        }
+
+        function selectAddType(type) {
+            selectedType = type;
+            renderAddModalContent();
+        }
+
+        function selectAddLevel(level) {
+            selectedLevel = level;
+            renderAddModalContent();
+        }
+
+        function addRelationship() {
+            const name = document.getElementById('name-input').value.trim();
+            const birthday = document.getElementById('birthday-input').value.trim() || null;
+
+            if (!name) {
+                alert('请输入昵称');
+                return;
+            }
+
+            const newRelationship = {
+                id: Date.now().toString(),
+                name,
+                avatar: selectedAvatar,
+                type: selectedType,
+                level: selectedLevel,
+                birthday,
+                lastContact: getCurrentDate(),
+                temperatureHistory: [{
+                    date: getCurrentDate(),
+                    score: 60,
+                    note: '刚认识'
+                }],
+                createdAt: getCurrentDate()
+            };
+
+            data.relationships.push(newRelationship);
+            saveData();
+            closeAddModal();
+            renderHome();
+        }
+
+        function openDetailModal(id) {
+            currentDetailId = id;
+            renderDetailContent();
+            const modal = document.getElementById('detail-modal');
+            modal.classList.add('active');
+        }
+
+        function closeDetailModal() {
+            const modal = document.getElementById('detail-modal');
+            modal.classList.remove('active');
+            currentDetailId = null;
+        }
+
+        function renderDetailContent() {
+            const r = data.relationships.find(x => x.id === currentDetailId);
+            if (!r) return;
+
+            const content = document.getElementById('detail-content');
+            const typeInfo = RELATIONSHIP_TYPES[r.type];
+            const levelInfo = RELATIONSHIP_LEVELS[r.level];
+            const score = getCurrentScore(r);
+
+            content.innerHTML = `
+                <div class="detail-header-section">
+                    <div class="detail-avatar breathing">${r.avatar}</div>
+                    <div class="detail-name">${r.name}</div>
+                    <div class="detail-tags">
+                        <span class="detail-tag primary">${typeInfo.icon} ${typeInfo.label}</span>
+                        <span class="detail-tag">★${'★'.repeat(levelInfo.value)} ${levelInfo.label}</span>
+                        <span class="detail-tag accent">🌡️ ${score}分</span>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-title">📈 温度曲线</div>
+                    <canvas id="detail-chart"></canvas>
+                </div>
+
+                <div class="history-section">
+                    <div class="history-title">📝 历史记录</div>
+                    <div class="history-list">
+                        ${r.temperatureHistory.slice().reverse().map(h => `
+                            <div class="history-item">
+                                <div class="history-date">${h.date}</div>
+                                <div class="history-score">🌡️ ${h.score}分</div>
+                                ${h.note ? `<div class="history-note">${h.note}</div>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            renderChart(r);
+        }
+
+        function renderChart(relationship) {
+            const ctx = document.getElementById('detail-chart');
+            if (!ctx) return;
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            const history = relationship.temperatureHistory;
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: history.map(h => h.date.slice(5)),
+                    datasets: [{
+                        label: '温度',
+                        data: history.map(h => h.score),
+                        borderColor: '#58A6FF',
+                        backgroundColor: 'rgba(88, 166, 255, 0.2)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#58A6FF',
+                        pointBorderColor: '#161B26',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 100,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#A3B8CC' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#A3B8CC' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function openQuickModal(id) {
+            currentDetailId = id;
+            quickTempChange = null;
+            renderQuickContent();
+            const modal = document.getElementById('quick-modal');
+            modal.classList.add('active');
+        }
+
+        function closeQuickModal() {
+            const modal = document.getElementById('quick-modal');
+            modal.classList.remove('active');
+            currentDetailId = null;
+            quickTempChange = null;
+        }
+
+        function renderQuickContent() {
+            const r = data.relationships.find(x => x.id === currentDetailId);
+            if (!r) return;
+
+            const content = document.getElementById('quick-content');
+            content.innerHTML = `
+                <div class="temp-update-section" style="margin-bottom: 0;">
+                    <div class="temp-update-title">✨ 和${r.name}的关系最近好吗？</div>
+                    <div class="temp-options">
+                        <div class="temp-option ${quickTempChange === -10 ? 'selected' : ''}"
+                             onclick="selectQuickTemp(-10)">
+                            <span class="temp-emoji">❄️</span>
+                            <span class="temp-label">变冷</span>
+                        </div>
+                        <div class="temp-option ${quickTempChange === 0 ? 'selected' : ''}"
+                             onclick="selectQuickTemp(0)">
+                            <span class="temp-emoji">😊</span>
+                            <span class="temp-label">没变化</span>
+                        </div>
+                        <div class="temp-option ${quickTempChange === 10 ? 'selected' : ''}"
+                             onclick="selectQuickTemp(10)">
+                            <span class="temp-emoji">☀️</span>
+                            <span class="temp-label">变暖</span>
+                        </div>
+                    </div>
+                    <textarea class="note-textarea" id="quick-note" placeholder="今天发生啥了？（可选）"></textarea>
+                </div>
+                <div class="modal-footer" style="padding: 16px 0 0;">
+                    <button class="btn-primary" onclick="quickAddTemperature()">记录</button>
+                </div>
+            `;
+        }
+
+        function selectQuickTemp(change) {
+            quickTempChange = change;
+            renderQuickContent();
+        }
+
+        function quickAddTemperature() {
+            if (quickTempChange === null) {
+                alert('请选择温度变化');
+                return;
+            }
+
+            const r = data.relationships.find(x => x.id === currentDetailId);
+            const currentScore = getCurrentScore(r);
+            const newScore = Math.max(0, Math.min(100, currentScore + quickTempChange));
+            const note = document.getElementById('quick-note').value;
+
+            r.temperatureHistory.push({
+                date: getCurrentDate(),
+                score: newScore,
+                note: note
+            });
+            r.lastContact = getCurrentDate();
+
+            saveData();
+            closeQuickModal();
+            renderHome();
+        }
+
+        function saveData() {
+            localStorage.setItem('blueRealm', JSON.stringify(data));
+        }
+
+        function loadData() {
+            const saved = localStorage.getItem('blueRealm');
+            if (saved) {
+                data = JSON.parse(saved);
+            }
+        }
+
+        function checkBirthdays() {
+            const today = new Date();
+            const todayMonth = today.getMonth() + 1;
+            const todayDay = today.getDate();
+            const todayStr = `${todayMonth.toString().padStart(2, '0')}-${todayDay.toString().padStart(2, '0')}`;
+            
+            const upcomingBirthdays = [];
+            
+            data.relationships.forEach(relationship => {
+                if (relationship.birthday) {
+                    const [month, day] = relationship.birthday.split('-').map(Number);
+                    const birthdayStr = `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                    
+                    if (birthdayStr === todayStr) {
+                        upcomingBirthdays.push({ ...relationship, type: 'today' });
+                    } else {
+                        // 检查未来7天内的生日
+                        const birthdayDate = new Date(today.getFullYear(), month - 1, day);
+                        if (birthdayDate < today) {
+                            birthdayDate.setFullYear(today.getFullYear() + 1);
+                        }
+                        
+                        const diffTime = birthdayDate - today;
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        
+                        if (diffDays <= 7) {
+                            upcomingBirthdays.push({ ...relationship, type: 'upcoming', days: diffDays });
+                        }
+                    }
+                }
+            });
+            
+            if (upcomingBirthdays.length > 0) {
+                showBirthdayReminders(upcomingBirthdays);
+            }
+        }
+
+        function showBirthdayReminders(birthdays) {
+            let reminderHtml = '';
+            
+            birthdays.forEach(birthday => {
+                if (birthday.type === 'today') {
+                    reminderHtml += `
+                        <div class="suggestion-card">
+                            <div class="suggestion-icon">🎂</div>
+                            <div class="suggestion-text">今天是${birthday.name}的生日，送个祝福吧！</div>
+                        </div>
+                    `;
+                } else if (birthday.type === 'upcoming') {
+                    reminderHtml += `
+                        <div class="suggestion-card">
+                            <div class="suggestion-icon">📅</div>
+                            <div class="suggestion-text">${birthday.name}的生日还有${birthday.days}天，提前准备一下吧！</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            const suggestionArea = document.getElementById('suggestion-area');
+            if (suggestionArea) {
+                suggestionArea.innerHTML += reminderHtml;
+            }
+        }
+
+        function initOnboarding() {
+            const hasSeenOnboarding = localStorage.getItem('blueRealm_hasSeenOnboarding');
+            if (!hasSeenOnboarding) {
+                document.getElementById('onboarding-overlay').style.display = 'flex';
+                updateOnboardingSlide();
+                
+                document.getElementById('onboarding-next').addEventListener('click', nextOnboardingSlide);
+                document.getElementById('onboarding-finish').addEventListener('click', finishOnboarding);
+            }
+        }
+
+        function updateOnboardingSlide() {
+            // 隐藏所有幻灯片
+            document.querySelectorAll('.onboarding-slide').forEach((slide, index) => {
+                if (index === currentOnboardingSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            
+            // 更新指示点
+            document.querySelectorAll('.onboarding-dot').forEach((dot, index) => {
+                if (index === currentOnboardingSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+            
+            // 显示/隐藏按钮
+            if (currentOnboardingSlide === totalOnboardingSlides - 1) {
+                document.getElementById('onboarding-next').style.display = 'none';
+                document.getElementById('onboarding-finish').classList.add('active');
+            } else {
+                document.getElementById('onboarding-next').style.display = 'block';
+                document.getElementById('onboarding-finish').classList.remove('active');
+            }
+        }
+
+        function nextOnboardingSlide() {
+            if (currentOnboardingSlide < totalOnboardingSlides - 1) {
+                currentOnboardingSlide++;
+                updateOnboardingSlide();
+            }
+        }
+
+        function finishOnboarding() {
+            localStorage.setItem('blueRealm_hasSeenOnboarding', 'true');
+            document.getElementById('onboarding-overlay').style.display = 'none';
+        }
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+
+        // 恢复测试数据
+        if (data.relationships.length === 0) {
+            data.relationships = [
+                {
+                    id: '1',
+                    name: '小明',
+                    avatar: '🤝',
+                    type: 'friend',
+                    level: 'close',
+                    birthday: '05-20',
+                    lastContact: '2026-03-30',
+                    temperatureHistory: [
+                        { date: '2026-03-01', score: 70, note: '一起吃饭' },
+                        { date: '2026-03-15', score: 65, note: '好久没见' },
+                        { date: '2026-03-30', score: 55, note: '刚吵完架' }
+                    ],
+                    createdAt: '2026-01-15'
+                },
+                {
+                    id: '2',
+                    name: '老妈',
+                    avatar: '🏠',
+                    type: 'family',
+                    level: 'best',
+                    birthday: '08-15',
+                    lastContact: '2026-03-20',
+                    temperatureHistory: [
+                        { date: '2026-02-01', score: 85, note: '打电话回家' },
+                        { date: '2026-03-01', score: 80, note: '视频通话' },
+                        { date: '2026-03-20', score: 75, note: '好久没打了' }
+                    ],
+                    createdAt: '2026-01-01'
+                },
+                {
+                    id: '3',
+                    name: '小红',
+                    avatar: '❤️',
+                    type: 'lover',
+                    level: 'best',
+                    birthday: '12-25',
+                    lastContact: '2026-04-10',
+                    temperatureHistory: [
+                        { date: '2026-03-01', score: 75, note: '约会' },
+                        { date: '2026-03-20', score: 82, note: '一起看电影' },
+                        { date: '2026-04-10', score: 88, note: '收到礼物' }
+                    ],
+                    createdAt: '2026-02-14'
+                },
+                {
+                    id: '4',
+                    name: '阿杰',
+                    avatar: '👥',
+                    type: 'friend',
+                    level: 'friend',
+                    birthday: null,
+                    lastContact: '2026-04-05',
+                    temperatureHistory: [
+                        { date: '2026-03-15', score: 60, note: '打球' },
+                        { date: '2026-04-05', score: 65, note: '开黑' }
+                    ],
+                    createdAt: '2026-03-01'
+                }
+            ];
+            saveData();
+        }
+        loadData();
+        renderHome();
+        drawHeaderLogo();
+        checkBirthdays();
+        initOnboarding();
+    </script>
+</body>
+</html>
