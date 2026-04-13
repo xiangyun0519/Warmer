@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蓝境 LOGO 设计</title>
+    <style>
+        body {
+            background: #0D1117;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .logo-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+        canvas {
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <canvas id="logoCanvas" width="300" height="300"></canvas>
+    </div>
+    <script>
+        const canvas = document.getElementById('logoCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // 清除画布
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // 绘制背景
+        const gradientBg = ctx.createRadialGradient(150, 150, 0, 150, 150, 150);
+        gradientBg.addColorStop(0, '#161B26');
+        gradientBg.addColorStop(1, '#0D1117');
+        ctx.fillStyle = gradientBg;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // 绘制主圆形
+        const centerX = 150;
+        const centerY = 150;
+        const radius = 100;
+        
+        // 主圆形渐变
+        const gradientCircle = ctx.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+        gradientCircle.addColorStop(0, '#58A6FF');
+        gradientCircle.addColorStop(1, '#79B8FF');
+        
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+        ctx.fillStyle = gradientCircle;
+        ctx.fill();
+        
+        // 绘制内部波浪线（象征关系的流动）
+        ctx.beginPath();
+        ctx.moveTo(centerX - 70, centerY);
+        
+        // 绘制波浪路径
+        for (let i = -70; i <= 70; i += 10) {
+            const y = centerY + Math.sin(i * 0.1) * 15;
+            ctx.lineTo(centerX + i, y);
+        }
+        
+        ctx.strokeStyle = '#0D1117';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        
+        // 绘制连接点（象征关系的连接）
+        const points = [
+            { x: centerX - 40, y: centerY - 20 },
+            { x: centerX, y: centerY + 30 },
+            { x: centerX + 40, y: centerY - 10 }
+        ];
+        
+        points.forEach(point => {
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, 6, 0, Math.PI * 2);
+            ctx.fillStyle = '#0D1117';
+            ctx.fill();
+            
+            // 点的光晕效果
+            const gradientPoint = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, 12);
+            gradientPoint.addColorStop(0, 'rgba(88, 166, 255, 0.8)');
+            gradientPoint.addColorStop(1, 'rgba(88, 166, 255, 0)');
+            
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, 12, 0, Math.PI * 2);
+            ctx.fillStyle = gradientPoint;
+            ctx.fill();
+        });
+        
+        // 绘制品牌名称
+        ctx.font = 'bold 24px SF Pro Display, PingFang SC, sans-serif';
+        ctx.fillStyle = '#E6EDF3';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('蓝境', centerX, centerY + 70);
+        
+        // 绘制英文名称
+        ctx.font = '14px SF Pro Display, PingFang SC, sans-serif';
+        ctx.fillStyle = '#8B949E';
+        ctx.fillText('Blue Realm', centerX, centerY + 95);
+    </script>
+</body>
+</html>

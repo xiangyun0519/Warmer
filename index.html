@@ -134,11 +134,18 @@
             font-weight: 700;
             letter-spacing: 4px;
             margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 20px rgba(100, 181, 246, 0.4);
+            text-shadow: 0 0 20px rgba(88, 166, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #headerLogo {
+            vertical-align: middle;
         }
 
         .header-subtitle {
@@ -254,14 +261,19 @@
             background: linear-gradient(180deg, var(--status-green) 0%, #4CAF50 100%);
         }
 
+        .relationship-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         .relationship-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-4px);
             box-shadow: var(--shadow-soft), var(--shadow-glow);
-            border-color: rgba(100, 181, 246, 0.3);
+            border-color: rgba(88, 166, 255, 0.4);
         }
 
         .relationship-card:active {
             transform: translateY(0);
+            transition: all 0.1s ease;
         }
 
         .card-content {
@@ -347,34 +359,91 @@
             align-items: center;
             justify-content: center;
             font-size: 18px;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.2), transparent);
+            transition: left 0.6s ease;
         }
 
         .quick-btn:hover {
-            background: rgba(100, 181, 246, 0.2);
+            background: rgba(88, 166, 255, 0.2);
             border-color: var(--primary);
-            transform: scale(1.05);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.3);
+        }
+
+        .quick-btn:hover::before {
+            left: 100%;
         }
 
         .quick-btn:active {
             transform: scale(0.95);
+            transition: all 0.1s ease;
         }
 
         .empty-state {
             text-align: center;
-            padding: 60px 24px;
+            padding: 80px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
         }
 
         .empty-icon {
-            font-size: 64px;
-            margin-bottom: 16px;
-            opacity: 0.6;
+            font-size: 80px;
+            margin-bottom: 24px;
+            opacity: 0.8;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
         }
 
         .empty-text {
             font-size: 15px;
             color: var(--text-secondary);
             line-height: 1.6;
+            margin-bottom: 32px;
+            max-width: 320px;
+        }
+
+        .empty-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--shadow-soft), 0 0 20px rgba(88, 166, 255, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .empty-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(88, 166, 255, 0.45);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
         }
 
         .floating-btn {
@@ -442,13 +511,15 @@
             display: flex;
             flex-direction: column;
             transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
             position: relative;
             border-top: 1px solid var(--glass-border);
         }
 
         .modal-overlay.active .modal {
             transform: translateY(0);
+            opacity: 1;
         }
 
         .modal-handle {
@@ -526,6 +597,8 @@
             outline: none;
             border-color: var(--primary);
             background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.3);
         }
 
         .form-input::placeholder {
@@ -876,12 +949,130 @@
         }
 
         @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(100, 181, 246, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(100, 181, 246, 0.5); }
+            0%, 100% { box-shadow: 0 0 20px rgba(88, 166, 255, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(88, 166, 255, 0.5); }
         }
 
         .glowing {
             animation: glow 2s ease-in-out infinite;
+        }
+
+        .onboarding-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .onboarding-container {
+            width: 100%;
+            max-width: 480px;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .onboarding-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 100px 24px 200px;
+            text-align: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .onboarding-slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .onboarding-icon {
+            font-size: 100px;
+            margin-bottom: 32px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .onboarding-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .onboarding-text {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .onboarding-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px 24px;
+            background: linear-gradient(transparent, var(--bg-primary));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .onboarding-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .onboarding-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-tertiary);
+            transition: all 0.3s ease;
+        }
+
+        .onboarding-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: var(--primary);
+        }
+
+        .onboarding-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .onboarding-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft), 0 0 20px rgba(88, 166, 255, 0.4);
+        }
+
+        .onboarding-finish {
+            display: none;
+        }
+
+        .onboarding-finish.active {
+            display: block;
         }
     </style>
 </head>
@@ -894,7 +1085,10 @@
 
     <div class="container">
         <div class="header">
-            <div class="header-logo">蓝境</div>
+            <div class="header-logo">
+                <canvas id="headerLogo" width="48" height="48"></canvas>
+                <span style="margin-left: 12px;">蓝境</span>
+            </div>
             <div class="header-subtitle">让每一段关系都被看见</div>
         </div>
 
@@ -969,6 +1163,41 @@
         </div>
     </div>
 
+    <div class="onboarding-overlay" id="onboarding-overlay">
+        <div class="onboarding-container">
+            <div class="onboarding-slide" id="onboarding-slide-1">
+                <div class="onboarding-icon">🌊</div>
+                <h2 class="onboarding-title">欢迎来到蓝境</h2>
+                <p class="onboarding-text">让每一段关系都被看见</p>
+            </div>
+            <div class="onboarding-slide" id="onboarding-slide-2">
+                <div class="onboarding-icon">📊</div>
+                <h2 class="onboarding-title">温度曲线</h2>
+                <p class="onboarding-text">跟踪关系的温度变化，了解关系的发展趋势</p>
+            </div>
+            <div class="onboarding-slide" id="onboarding-slide-3">
+                <div class="onboarding-icon">💡</div>
+                <h2 class="onboarding-title">个性化建议</h2>
+                <p class="onboarding-text">根据关系状态，获得针对性的维护建议</p>
+            </div>
+            <div class="onboarding-slide" id="onboarding-slide-4">
+                <div class="onboarding-icon">✨</div>
+                <h2 class="onboarding-title">开始使用</h2>
+                <p class="onboarding-text">添加你重要的人，开始维护你的关系网络</p>
+            </div>
+            <div class="onboarding-nav">
+                <div class="onboarding-dots">
+                    <span class="onboarding-dot active"></span>
+                    <span class="onboarding-dot"></span>
+                    <span class="onboarding-dot"></span>
+                    <span class="onboarding-dot"></span>
+                </div>
+                <button class="onboarding-btn" id="onboarding-next">下一步</button>
+                <button class="onboarding-btn onboarding-finish" id="onboarding-finish">开始使用</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const RELATIONSHIP_TYPES = {
             friend: { label: '朋友', icon: '👥' },
@@ -994,7 +1223,7 @@
                     avatar: '🤝',
                     type: 'friend',
                     level: 'close',
-                    birthday: '05-20',
+                    birthday: '04-13',
                     lastContact: '2026-03-30',
                     temperatureHistory: [
                         { date: '2026-03-01', score: 70, note: '一起吃饭' },
@@ -1056,6 +1285,58 @@
         let currentDetailId = null;
         let quickTempChange = null;
         let chartInstance = null;
+        let currentOnboardingSlide = 0;
+        const totalOnboardingSlides = 4;
+
+        function drawHeaderLogo() {
+            const canvas = document.getElementById('headerLogo');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const centerX = 24;
+            const centerY = 24;
+            const radius = 20;
+            
+            // 清除画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制主圆形
+            const gradientCircle = ctx.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+            gradientCircle.addColorStop(0, '#58A6FF');
+            gradientCircle.addColorStop(1, '#79B8FF');
+            
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.fillStyle = gradientCircle;
+            ctx.fill();
+            
+            // 绘制内部波浪线
+            ctx.beginPath();
+            ctx.moveTo(centerX - 14, centerY);
+            
+            for (let i = -14; i <= 14; i += 4) {
+                const y = centerY + Math.sin(i * 0.3) * 3;
+                ctx.lineTo(centerX + i, y);
+            }
+            
+            ctx.strokeStyle = '#0D1117';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            
+            // 绘制连接点
+            const points = [
+                { x: centerX - 8, y: centerY - 4 },
+                { x: centerX, y: centerY + 6 },
+                { x: centerX + 8, y: centerY - 2 }
+            ];
+            
+            points.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = '#0D1117';
+                ctx.fill();
+            });
+        }
 
         function getCurrentDate() {
             return new Date().toISOString().split('T')[0];
@@ -1217,8 +1498,10 @@
             if (data.relationships.length === 0) {
                 html = `
                     <div class="empty-state">
-                        <div class="empty-icon">🌟</div>
-                        <div class="empty-text">还没有添加任何人<br>点击下方按钮开始吧</div>
+                        <div class="empty-icon">🌊</div>
+                        <div class="empty-title">欢迎来到蓝境</div>
+                        <div class="empty-text">开始添加你重要的关系，让每一段关系都被看见</div>
+                        <button class="empty-btn" onclick="openAddModal()">添加重要的人</button>
                     </div>
                 `;
             }
@@ -1530,6 +1813,122 @@
             }
         }
 
+        function checkBirthdays() {
+            const today = new Date();
+            const todayMonth = today.getMonth() + 1;
+            const todayDay = today.getDate();
+            const todayStr = `${todayMonth.toString().padStart(2, '0')}-${todayDay.toString().padStart(2, '0')}`;
+            
+            const upcomingBirthdays = [];
+            
+            data.relationships.forEach(relationship => {
+                if (relationship.birthday) {
+                    const [month, day] = relationship.birthday.split('-').map(Number);
+                    const birthdayStr = `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+                    
+                    if (birthdayStr === todayStr) {
+                        upcomingBirthdays.push({ ...relationship, type: 'today' });
+                    } else {
+                        // 检查未来7天内的生日
+                        const birthdayDate = new Date(today.getFullYear(), month - 1, day);
+                        if (birthdayDate < today) {
+                            birthdayDate.setFullYear(today.getFullYear() + 1);
+                        }
+                        
+                        const diffTime = birthdayDate - today;
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        
+                        if (diffDays <= 7) {
+                            upcomingBirthdays.push({ ...relationship, type: 'upcoming', days: diffDays });
+                        }
+                    }
+                }
+            });
+            
+            if (upcomingBirthdays.length > 0) {
+                showBirthdayReminders(upcomingBirthdays);
+            }
+        }
+
+        function showBirthdayReminders(birthdays) {
+            let reminderHtml = '';
+            
+            birthdays.forEach(birthday => {
+                if (birthday.type === 'today') {
+                    reminderHtml += `
+                        <div class="suggestion-card">
+                            <div class="suggestion-icon">🎂</div>
+                            <div class="suggestion-text">今天是${birthday.name}的生日，送个祝福吧！</div>
+                        </div>
+                    `;
+                } else if (birthday.type === 'upcoming') {
+                    reminderHtml += `
+                        <div class="suggestion-card">
+                            <div class="suggestion-icon">📅</div>
+                            <div class="suggestion-text">${birthday.name}的生日还有${birthday.days}天，提前准备一下吧！</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            const suggestionArea = document.getElementById('suggestion-area');
+            if (suggestionArea) {
+                suggestionArea.innerHTML += reminderHtml;
+            }
+        }
+
+        function initOnboarding() {
+            const hasSeenOnboarding = localStorage.getItem('blueRealm_hasSeenOnboarding');
+            if (!hasSeenOnboarding) {
+                document.getElementById('onboarding-overlay').style.display = 'flex';
+                updateOnboardingSlide();
+                
+                document.getElementById('onboarding-next').addEventListener('click', nextOnboardingSlide);
+                document.getElementById('onboarding-finish').addEventListener('click', finishOnboarding);
+            }
+        }
+
+        function updateOnboardingSlide() {
+            // 隐藏所有幻灯片
+            document.querySelectorAll('.onboarding-slide').forEach((slide, index) => {
+                if (index === currentOnboardingSlide) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            
+            // 更新指示点
+            document.querySelectorAll('.onboarding-dot').forEach((dot, index) => {
+                if (index === currentOnboardingSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+            
+            // 显示/隐藏按钮
+            if (currentOnboardingSlide === totalOnboardingSlides - 1) {
+                document.getElementById('onboarding-next').style.display = 'none';
+                document.getElementById('onboarding-finish').classList.add('active');
+            } else {
+                document.getElementById('onboarding-next').style.display = 'block';
+                document.getElementById('onboarding-finish').classList.remove('active');
+            }
+        }
+
+        function nextOnboardingSlide() {
+            if (currentOnboardingSlide < totalOnboardingSlides - 1) {
+                currentOnboardingSlide++;
+                updateOnboardingSlide();
+            }
+        }
+
+        function finishOnboarding() {
+            localStorage.setItem('blueRealm_hasSeenOnboarding', 'true');
+            document.getElementById('onboarding-overlay').style.display = 'none';
+        }
+
         document.querySelectorAll('.modal-overlay').forEach(overlay => {
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
@@ -1538,8 +1937,76 @@
             });
         });
 
+        // 恢复测试数据
+        if (data.relationships.length === 0) {
+            data.relationships = [
+                {
+                    id: '1',
+                    name: '小明',
+                    avatar: '🤝',
+                    type: 'friend',
+                    level: 'close',
+                    birthday: '05-20',
+                    lastContact: '2026-03-30',
+                    temperatureHistory: [
+                        { date: '2026-03-01', score: 70, note: '一起吃饭' },
+                        { date: '2026-03-15', score: 65, note: '好久没见' },
+                        { date: '2026-03-30', score: 55, note: '刚吵完架' }
+                    ],
+                    createdAt: '2026-01-15'
+                },
+                {
+                    id: '2',
+                    name: '老妈',
+                    avatar: '🏠',
+                    type: 'family',
+                    level: 'best',
+                    birthday: '08-15',
+                    lastContact: '2026-03-20',
+                    temperatureHistory: [
+                        { date: '2026-02-01', score: 85, note: '打电话回家' },
+                        { date: '2026-03-01', score: 80, note: '视频通话' },
+                        { date: '2026-03-20', score: 75, note: '好久没打了' }
+                    ],
+                    createdAt: '2026-01-01'
+                },
+                {
+                    id: '3',
+                    name: '小红',
+                    avatar: '❤️',
+                    type: 'lover',
+                    level: 'best',
+                    birthday: '12-25',
+                    lastContact: '2026-04-10',
+                    temperatureHistory: [
+                        { date: '2026-03-01', score: 75, note: '约会' },
+                        { date: '2026-03-20', score: 82, note: '一起看电影' },
+                        { date: '2026-04-10', score: 88, note: '收到礼物' }
+                    ],
+                    createdAt: '2026-02-14'
+                },
+                {
+                    id: '4',
+                    name: '阿杰',
+                    avatar: '👥',
+                    type: 'friend',
+                    level: 'friend',
+                    birthday: null,
+                    lastContact: '2026-04-05',
+                    temperatureHistory: [
+                        { date: '2026-03-15', score: 60, note: '打球' },
+                        { date: '2026-04-05', score: 65, note: '开黑' }
+                    ],
+                    createdAt: '2026-03-01'
+                }
+            ];
+            saveData();
+        }
         loadData();
         renderHome();
+        drawHeaderLogo();
+        checkBirthdays();
+        initOnboarding();
     </script>
 </body>
 </html>
