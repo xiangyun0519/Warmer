@@ -72,7 +72,7 @@
         .blob-2 {
             width: 350px;
             height: 350px;
-            background: linear-gradient(135deg, #FFAB91 0%, #FF8A65 100%);
+            background: linear-gradient(135deg, #79B8FF 0%, #58A6FF 100%);
             bottom: -120px;
             left: -80px;
             animation: float2 10s ease-in-out infinite;
@@ -382,7 +382,7 @@
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--accent) 0%, #FF8A65 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             border: none;
             border-radius: 50px;
@@ -390,7 +390,7 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            box-shadow: var(--shadow-soft), 0 0 20px rgba(255, 171, 145, 0.4);
+            box-shadow: var(--shadow-soft), 0 0 20px rgba(88, 166, 255, 0.4);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -400,7 +400,7 @@
 
         .floating-btn:hover {
             transform: translateX(-50%) scale(1.05);
-            box-shadow: 0 8px 24px rgba(255, 171, 145, 0.45);
+            box-shadow: 0 8px 24px rgba(88, 166, 255, 0.45);
         }
 
         .floating-btn:active {
@@ -648,7 +648,7 @@
         .btn-primary {
             width: 100%;
             padding: 16px;
-            background: linear-gradient(135deg, var(--accent) 0%, #FF8A65 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             border: none;
             border-radius: var(--radius-sm);
@@ -661,7 +661,7 @@
 
         .btn-primary:hover {
             transform: translateY(-1px);
-            box-shadow: var(--shadow-soft), 0 0 20px rgba(255, 171, 145, 0.4);
+            box-shadow: var(--shadow-soft), 0 0 20px rgba(88, 166, 255, 0.4);
         }
 
         .btn-primary:active {
@@ -713,18 +713,18 @@
         }
 
         .detail-tag.primary {
-            background: rgba(100, 181, 246, 0.2);
+            background: rgba(88, 166, 255, 0.2);
             color: var(--primary);
         }
 
         .detail-tag.accent {
-            background: rgba(255, 171, 145, 0.2);
-            color: var(--accent);
+            background: rgba(88, 166, 255, 0.2);
+            color: var(--primary);
         }
 
         .chart-card {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(100, 181, 246, 0.2);
+            border: 1px solid var(--glass-border);
             border-radius: var(--radius-md);
             padding: 20px;
             margin-bottom: 20px;
@@ -739,7 +739,7 @@
 
         .temp-update-section {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(100, 181, 246, 0.2);
+            border: 1px solid var(--glass-border);
             border-radius: var(--radius-md);
             padding: 20px;
             margin-bottom: 20px;
@@ -816,7 +816,7 @@
 
         .history-section {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(100, 181, 246, 0.2);
+            border: 1px solid var(--glass-border);
             border-radius: var(--radius-md);
             padding: 20px;
         }
@@ -837,7 +837,7 @@
         .history-item {
             padding: 14px;
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(100, 181, 246, 0.1);
+            border: 1px solid var(--glass-border);
             border-radius: var(--radius-sm);
         }
 
@@ -852,8 +852,8 @@
             align-items: center;
             gap: 4px;
             padding: 4px 10px;
-            background: rgba(255, 171, 145, 0.2);
-            color: var(--accent);
+            background: rgba(88, 166, 255, 0.2);
+            color: var(--primary);
             border-radius: 8px;
             font-size: 12px;
             font-weight: 600;
@@ -1412,12 +1412,12 @@
                     datasets: [{
                         label: '温度',
                         data: history.map(h => h.score),
-                        borderColor: '#64B5F6',
-                        backgroundColor: 'rgba(100, 181, 246, 0.2)',
+                        borderColor: '#58A6FF',
+                        backgroundColor: 'rgba(88, 166, 255, 0.2)',
                         fill: true,
                         tension: 0.4,
-                        pointBackgroundColor: '#FFAB91',
-                        pointBorderColor: '#1E222C',
+                        pointBackgroundColor: '#58A6FF',
+                        pointBorderColor: '#161B26',
                         pointBorderWidth: 2,
                         pointRadius: 6
                     }]
