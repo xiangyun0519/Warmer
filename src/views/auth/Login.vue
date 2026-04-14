@@ -75,7 +75,7 @@
         <!-- 微信登录 -->
         <div class="form-section">
           <button class="btn-wechat" @click="loginByWechat">
-            <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=wechat%20chat%20icon%20minimal%20flat%20design%20green%20color%20scheme&image_size=square" alt="微信" class="wechat-icon">
+            <i class="fab fa-weixin wechat-icon"></i>
             微信登录
           </button>
         </div>

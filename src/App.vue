@@ -38,8 +38,8 @@
             <div v-if="upcomingBirthdays.length > 0">
               <div v-for="birthday in upcomingBirthdays" :key="birthday.id" class="suggestion-card">
                 <div class="suggestion-icon">
-                  <img v-if="birthday.type === 'today'" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=birthday%20cake%20icon%20minimal%20flat%20design%20colorful&image_size=square" alt="生日" class="icon-image">
-                  <img v-else src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=calendar%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square" alt="日历" class="icon-image">
+                  <i v-if="birthday.type === 'today'" class="fas fa-birthday-cake"></i>
+                  <i v-else class="fas fa-calendar"></i>
                 </div>
                 <div class="suggestion-text">
                   {{ birthday.type === 'today' ? `今天是${birthday.name}的生日，送个祝福吧！` : `${birthday.name}的生日还有${birthday.days}天，提前准备一下吧！` }}
@@ -54,7 +54,7 @@
             <div v-if="groupedRelationships.red.length > 0" class="section">
               <div class="section-header">
                 <div class="section-title">
-                  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=red%20circle%20alert%20icon%20minimal%20flat%20design&image_size=square" alt="需要关心" class="status-icon"> 需要关心
+                  <i class="fas fa-exclamation-circle status-icon red"></i> 需要关心
                   <span class="section-count">{{ groupedRelationships.red.length }}</span>
                 </div>
               </div>
@@ -67,12 +67,12 @@
                       <div class="card-meta">
                         <span class="card-tag"><img src="{{ RELATIONSHIP_TYPES[r.type].icon }}" alt="{{ RELATIONSHIP_TYPES[r.type].label }}" class="tag-icon"> {{ RELATIONSHIP_TYPES[r.type].label }}</span>
                         <span class="card-tag">{{ getDaysSince(r.lastContact) }}天前</span>
-                        <span class="card-score red"><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=temperature%20thermometer%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square" alt="温度" class="temp-icon"> {{ getCurrentScore(r) }}分</span>
+                        <span class="card-score red"><i class="fas fa-thermometer-half temp-icon"></i> {{ getCurrentScore(r) }}分</span>
                       </div>
                     </div>
                     <div class="card-actions">
-                      <button class="quick-btn"><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=edit%20pencil%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square" alt="编辑" class="btn-icon"></button>
-                      <button class="quick-btn"><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chart%20statistics%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square" alt="统计" class="btn-icon"></button>
+                      <button class="quick-btn"><i class="fas fa-edit btn-icon"></i></button>
+                      <button class="quick-btn"><i class="fas fa-chart-line btn-icon"></i></button>
                     </div>
                   </div>
                 </div>
@@ -83,7 +83,7 @@
             <div v-if="groupedRelationships.yellow.length > 0" class="section">
               <div class="section-header">
                 <div class="section-title">
-                  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=yellow%20circle%20warning%20icon%20minimal%20flat%20design&image_size=square" alt="保持联系" class="status-icon"> 保持联系
+                  <i class="fas fa-exclamation-triangle status-icon yellow"></i> 保持联系
                   <span class="section-count">{{ groupedRelationships.yellow.length }}</span>
                 </div>
               </div>
@@ -96,12 +96,12 @@
                       <div class="card-meta">
                         <span class="card-tag"><img src="{{ RELATIONSHIP_TYPES[r.type].icon }}" alt="{{ RELATIONSHIP_TYPES[r.type].label }}" class="tag-icon"> {{ RELATIONSHIP_TYPES[r.type].label }}</span>
                         <span class="card-tag">{{ getDaysSince(r.lastContact) }}天前</span>
-                        <span class="card-score yellow"><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=temperature%20thermometer%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square" alt="温度" class="temp-icon"> {{ getCurrentScore(r) }}分</span>
+                        <span class="card-score yellow"><i class="fas fa-thermometer-half temp-icon"></i> {{ getCurrentScore(r) }}分</span>
                       </div>
                     </div>
                     <div class="card-actions">
-                      <button class="quick-btn"><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=edit%20pencil%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square" alt="编辑" class="btn-icon"></button>
-                      <button class="quick-btn"><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chart%20statistics%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square" alt="统计" class="btn-icon"></button>
+                      <button class="quick-btn"><i class="fas fa-edit btn-icon"></i></button>
+                      <button class="quick-btn"><i class="fas fa-chart-line btn-icon"></i></button>
                     </div>
                   </div>
                 </div>
@@ -112,7 +112,7 @@
             <div v-if="groupedRelationships.green.length > 0" class="section">
               <div class="section-header">
                 <div class="section-title">
-                  <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=green%20circle%20success%20icon%20minimal%20flat%20design&image_size=square" alt="关系健康" class="status-icon"> 关系健康
+                  <i class="fas fa-check-circle status-icon green"></i> 关系健康
                   <span class="section-count">{{ groupedRelationships.green.length }}</span>
                 </div>
               </div>
@@ -125,12 +125,12 @@
                       <div class="card-meta">
                         <span class="card-tag"><img src="{{ RELATIONSHIP_TYPES[r.type].icon }}" alt="{{ RELATIONSHIP_TYPES[r.type].label }}" class="tag-icon"> {{ RELATIONSHIP_TYPES[r.type].label }}</span>
                         <span class="card-tag">{{ getDaysSince(r.lastContact) }}天前</span>
-                        <span class="card-score green"><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=temperature%20thermometer%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square" alt="温度" class="temp-icon"> {{ getCurrentScore(r) }}分</span>
+                        <span class="card-score green"><i class="fas fa-thermometer-half temp-icon"></i> {{ getCurrentScore(r) }}分</span>
                       </div>
                     </div>
                     <div class="card-actions">
-                      <button class="quick-btn"><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=edit%20pencil%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square" alt="编辑" class="btn-icon"></button>
-                      <button class="quick-btn"><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chart%20statistics%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square" alt="统计" class="btn-icon"></button>
+                      <button class="quick-btn"><i class="fas fa-edit btn-icon"></i></button>
+                      <button class="quick-btn"><i class="fas fa-chart-line btn-icon"></i></button>
                     </div>
                   </div>
                 </div>
@@ -139,7 +139,7 @@
 
             <!-- 空状态 -->
             <div v-if="groupedRelationships.red.length === 0 && groupedRelationships.yellow.length === 0 && groupedRelationships.green.length === 0" class="empty-state">
-              <div class="empty-icon"><img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=empty%20state%20ocean%20wave%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square" alt="空状态" class="empty-image"></div>
+              <div class="empty-icon"><i class="fas fa-water"></i></div>
               <div class="empty-title">欢迎来到蓝境</div>
               <div class="empty-text">开始添加你重要的关系，让每一段关系都被看见</div>
               <button class="empty-btn" @click="openAddModal">添加重要的人</button>

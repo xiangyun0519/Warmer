@@ -2,9 +2,9 @@ import { defineStore } from 'pinia'
 
 // 关系类型和等级数据
 export const RELATIONSHIP_TYPES = {
-  friend: { label: '朋友', icon: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=friendly%20group%20of%20people%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square' },
-  lover: { label: '恋人', icon: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=heart%20icon%20minimal%20flat%20design%20red%20color%20scheme&image_size=square' },
-  family: { label: '家人', icon: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20home%20icon%20minimal%20flat%20design%20green%20color%20scheme&image_size=square' }
+  friend: { label: '朋友', icon: 'https://api.dicebear.com/7.x/initials/svg?seed=Friend&backgroundColor=0d9488' },
+  lover: { label: '恋人', icon: 'https://api.dicebear.com/7.x/initials/svg?seed=Lover&backgroundColor=f43f5e' },
+  family: { label: '家人', icon: 'https://api.dicebear.com/7.x/initials/svg?seed=Family&backgroundColor=10b981' }
 }
 
 export const RELATIONSHIP_LEVELS = {
@@ -16,26 +16,26 @@ export const RELATIONSHIP_LEVELS = {
 }
 
 export const AVATAR_OPTIONS = [
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=friendly%20person%20avatar%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20member%20avatar%20minimal%20flat%20design%20green%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=lover%20avatar%20minimal%20flat%20design%20red%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=friend%20avatar%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20purple%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20orange%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20teal%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20pink%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20yellow%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20indigo%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20brown%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20gray%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20cyan%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20lime%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20navy%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20maroon%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20olive%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20teal%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20purple%20color%20scheme&image_size=square',
-  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square'
+  'https://api.dicebear.com/7.x/initials/svg?seed=User1&backgroundColor=3b82f6',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User2&backgroundColor=10b981',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User3&backgroundColor=f43f5e',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User4&backgroundColor=8b5cf6',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User5&backgroundColor=f59e0b',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User6&backgroundColor=ec4899',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User7&backgroundColor=06b6d4',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User8&backgroundColor=14b8a6',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User9&backgroundColor=84cc16',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User10&backgroundColor=6366f1',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User11&backgroundColor=d97706',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User12&backgroundColor=7e22ce',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User13&backgroundColor=0891b2',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User14&backgroundColor=059669',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User15&backgroundColor=dc2626',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User16&backgroundColor=4f46e5',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User17&backgroundColor=ea580c',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User18&backgroundColor=be185d',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User19&backgroundColor=1e40af',
+  'https://api.dicebear.com/7.x/initials/svg?seed=User20&backgroundColor=166534'
 ]
 
 // 获取当前日期
@@ -143,7 +143,7 @@ export const useMainStore = defineStore('main', {
         {
           id: '1',
           name: '小明',
-          avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=friendly%20person%20avatar%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square',
+          avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=小明&backgroundColor=3b82f6',
           type: 'friend',
           level: 'close',
           birthday: '04-13',
@@ -158,7 +158,7 @@ export const useMainStore = defineStore('main', {
         {
           id: '2',
           name: '老妈',
-          avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20member%20avatar%20minimal%20flat%20design%20green%20color%20scheme&image_size=square',
+          avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=老妈&backgroundColor=10b981',
           type: 'family',
           level: 'best',
           birthday: '08-15',
@@ -173,7 +173,7 @@ export const useMainStore = defineStore('main', {
         {
           id: '3',
           name: '小红',
-          avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=lover%20avatar%20minimal%20flat%20design%20red%20color%20scheme&image_size=square',
+          avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=小红&backgroundColor=f43f5e',
           type: 'lover',
           level: 'best',
           birthday: '12-25',
@@ -188,7 +188,7 @@ export const useMainStore = defineStore('main', {
         {
           id: '4',
           name: '阿杰',
-          avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=friend%20avatar%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square',
+          avatar: 'https://api.dicebear.com/7.x/initials/svg?seed=阿杰&backgroundColor=8b5cf6',
           type: 'friend',
           level: 'friend',
           birthday: null,
