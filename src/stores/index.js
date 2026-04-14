@@ -2,9 +2,9 @@ import { defineStore } from 'pinia'
 
 // 关系类型和等级数据
 export const RELATIONSHIP_TYPES = {
-  friend: { label: '朋友', icon: '/src/assets/images/friend.png' },
-  lover: { label: '恋人', icon: '/src/assets/images/lover.png' },
-  family: { label: '家人', icon: '/src/assets/images/family.png' }
+  friend: { label: '朋友', icon: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=friendly%20group%20of%20people%20icon%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square' },
+  lover: { label: '恋人', icon: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=heart%20icon%20minimal%20flat%20design%20red%20color%20scheme&image_size=square' },
+  family: { label: '家人', icon: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20home%20icon%20minimal%20flat%20design%20green%20color%20scheme&image_size=square' }
 }
 
 export const RELATIONSHIP_LEVELS = {
@@ -16,26 +16,26 @@ export const RELATIONSHIP_LEVELS = {
 }
 
 export const AVATAR_OPTIONS = [
-  '/src/assets/images/avatar1.png',
-  '/src/assets/images/avatar2.png',
-  '/src/assets/images/avatar3.png',
-  '/src/assets/images/avatar4.png',
-  '/src/assets/images/avatar5.png',
-  '/src/assets/images/avatar6.png',
-  '/src/assets/images/avatar7.png',
-  '/src/assets/images/avatar8.png',
-  '/src/assets/images/avatar9.png',
-  '/src/assets/images/avatar10.png',
-  '/src/assets/images/avatar11.png',
-  '/src/assets/images/avatar12.png',
-  '/src/assets/images/avatar13.png',
-  '/src/assets/images/avatar14.png',
-  '/src/assets/images/avatar15.png',
-  '/src/assets/images/avatar16.png',
-  '/src/assets/images/avatar17.png',
-  '/src/assets/images/avatar18.png',
-  '/src/assets/images/avatar19.png',
-  '/src/assets/images/avatar20.png'
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=friendly%20person%20avatar%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20member%20avatar%20minimal%20flat%20design%20green%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=lover%20avatar%20minimal%20flat%20design%20red%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=friend%20avatar%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20purple%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20orange%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20teal%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20pink%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20yellow%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20indigo%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20brown%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20gray%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20cyan%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20lime%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20navy%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20maroon%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20olive%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20teal%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20purple%20color%20scheme&image_size=square',
+  'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=person%20avatar%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square'
 ]
 
 // 获取当前日期
@@ -143,7 +143,7 @@ export const useMainStore = defineStore('main', {
         {
           id: '1',
           name: '小明',
-          avatar: '/src/assets/images/avatar1.png',
+          avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=friendly%20person%20avatar%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square',
           type: 'friend',
           level: 'close',
           birthday: '04-13',
@@ -158,7 +158,7 @@ export const useMainStore = defineStore('main', {
         {
           id: '2',
           name: '老妈',
-          avatar: '/src/assets/images/avatar2.png',
+          avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=family%20member%20avatar%20minimal%20flat%20design%20green%20color%20scheme&image_size=square',
           type: 'family',
           level: 'best',
           birthday: '08-15',
@@ -173,7 +173,7 @@ export const useMainStore = defineStore('main', {
         {
           id: '3',
           name: '小红',
-          avatar: '/src/assets/images/avatar3.png',
+          avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=lover%20avatar%20minimal%20flat%20design%20red%20color%20scheme&image_size=square',
           type: 'lover',
           level: 'best',
           birthday: '12-25',
@@ -188,7 +188,7 @@ export const useMainStore = defineStore('main', {
         {
           id: '4',
           name: '阿杰',
-          avatar: '/src/assets/images/avatar4.png',
+          avatar: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=friend%20avatar%20minimal%20flat%20design%20blue%20color%20scheme&image_size=square',
           type: 'friend',
           level: 'friend',
           birthday: null,
