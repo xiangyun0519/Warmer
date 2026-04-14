@@ -75,7 +75,7 @@
         <!-- 微信登录 -->
         <div class="form-section">
           <button class="btn-wechat" @click="loginByWechat">
-            <span class="wechat-icon">💬</span>
+            <img src="/src/assets/images/wechat.png" alt="微信" class="wechat-icon">
             微信登录
           </button>
         </div>
@@ -438,7 +438,9 @@ onMounted(() => {
 }
 
 .wechat-icon {
-  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 
 .auth-footer {

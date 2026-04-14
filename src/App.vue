@@ -37,7 +37,10 @@
             <!-- 生日提醒 -->
             <div v-if="upcomingBirthdays.length > 0">
               <div v-for="birthday in upcomingBirthdays" :key="birthday.id" class="suggestion-card">
-                <div class="suggestion-icon">{{ birthday.type === 'today' ? '🎂' : '📅' }}</div>
+                <div class="suggestion-icon">
+                  <img v-if="birthday.type === 'today'" src="/src/assets/images/birthday.png" alt="生日" class="icon-image">
+                  <img v-else src="/src/assets/images/calendar.png" alt="日历" class="icon-image">
+                </div>
                 <div class="suggestion-text">
                   {{ birthday.type === 'today' ? `今天是${birthday.name}的生日，送个祝福吧！` : `${birthday.name}的生日还有${birthday.days}天，提前准备一下吧！` }}
                 </div>
@@ -51,7 +54,7 @@
             <div v-if="groupedRelationships.red.length > 0" class="section">
               <div class="section-header">
                 <div class="section-title">
-                  🔴 需要关心
+                  <img src="/src/assets/images/red.png" alt="需要关心" class="status-icon"> 需要关心
                   <span class="section-count">{{ groupedRelationships.red.length }}</span>
                 </div>
               </div>
@@ -62,14 +65,14 @@
                     <div class="card-info">
                       <div class="card-name">{{ r.name }}</div>
                       <div class="card-meta">
-                        <span class="card-tag">{{ RELATIONSHIP_TYPES[r.type].icon }} {{ RELATIONSHIP_TYPES[r.type].label }}</span>
+                        <span class="card-tag"><img src="{{ RELATIONSHIP_TYPES[r.type].icon }}" alt="{{ RELATIONSHIP_TYPES[r.type].label }}" class="tag-icon"> {{ RELATIONSHIP_TYPES[r.type].label }}</span>
                         <span class="card-tag">{{ getDaysSince(r.lastContact) }}天前</span>
-                        <span class="card-score red">🌡️ {{ getCurrentScore(r) }}分</span>
+                        <span class="card-score red"><img src="/src/assets/images/temperature.png" alt="温度" class="temp-icon"> {{ getCurrentScore(r) }}分</span>
                       </div>
                     </div>
                     <div class="card-actions">
-                      <button class="quick-btn">✏️</button>
-                      <button class="quick-btn">📊</button>
+                      <button class="quick-btn"><img src="/src/assets/images/edit.png" alt="编辑" class="btn-icon"></button>
+                      <button class="quick-btn"><img src="/src/assets/images/chart.png" alt="统计" class="btn-icon"></button>
                     </div>
                   </div>
                 </div>
@@ -80,7 +83,7 @@
             <div v-if="groupedRelationships.yellow.length > 0" class="section">
               <div class="section-header">
                 <div class="section-title">
-                  🟡 保持联系
+                  <img src="/src/assets/images/yellow.png" alt="保持联系" class="status-icon"> 保持联系
                   <span class="section-count">{{ groupedRelationships.yellow.length }}</span>
                 </div>
               </div>
@@ -91,14 +94,14 @@
                     <div class="card-info">
                       <div class="card-name">{{ r.name }}</div>
                       <div class="card-meta">
-                        <span class="card-tag">{{ RELATIONSHIP_TYPES[r.type].icon }} {{ RELATIONSHIP_TYPES[r.type].label }}</span>
+                        <span class="card-tag"><img src="{{ RELATIONSHIP_TYPES[r.type].icon }}" alt="{{ RELATIONSHIP_TYPES[r.type].label }}" class="tag-icon"> {{ RELATIONSHIP_TYPES[r.type].label }}</span>
                         <span class="card-tag">{{ getDaysSince(r.lastContact) }}天前</span>
-                        <span class="card-score yellow">🌡️ {{ getCurrentScore(r) }}分</span>
+                        <span class="card-score yellow"><img src="/src/assets/images/temperature.png" alt="温度" class="temp-icon"> {{ getCurrentScore(r) }}分</span>
                       </div>
                     </div>
                     <div class="card-actions">
-                      <button class="quick-btn">✏️</button>
-                      <button class="quick-btn">📊</button>
+                      <button class="quick-btn"><img src="/src/assets/images/edit.png" alt="编辑" class="btn-icon"></button>
+                      <button class="quick-btn"><img src="/src/assets/images/chart.png" alt="统计" class="btn-icon"></button>
                     </div>
                   </div>
                 </div>
@@ -109,7 +112,7 @@
             <div v-if="groupedRelationships.green.length > 0" class="section">
               <div class="section-header">
                 <div class="section-title">
-                  🟢 关系健康
+                  <img src="/src/assets/images/green.png" alt="关系健康" class="status-icon"> 关系健康
                   <span class="section-count">{{ groupedRelationships.green.length }}</span>
                 </div>
               </div>
@@ -120,14 +123,14 @@
                     <div class="card-info">
                       <div class="card-name">{{ r.name }}</div>
                       <div class="card-meta">
-                        <span class="card-tag">{{ RELATIONSHIP_TYPES[r.type].icon }} {{ RELATIONSHIP_TYPES[r.type].label }}</span>
+                        <span class="card-tag"><img src="{{ RELATIONSHIP_TYPES[r.type].icon }}" alt="{{ RELATIONSHIP_TYPES[r.type].label }}" class="tag-icon"> {{ RELATIONSHIP_TYPES[r.type].label }}</span>
                         <span class="card-tag">{{ getDaysSince(r.lastContact) }}天前</span>
-                        <span class="card-score green">🌡️ {{ getCurrentScore(r) }}分</span>
+                        <span class="card-score green"><img src="/src/assets/images/temperature.png" alt="温度" class="temp-icon"> {{ getCurrentScore(r) }}分</span>
                       </div>
                     </div>
                     <div class="card-actions">
-                      <button class="quick-btn">✏️</button>
-                      <button class="quick-btn">📊</button>
+                      <button class="quick-btn"><img src="/src/assets/images/edit.png" alt="编辑" class="btn-icon"></button>
+                      <button class="quick-btn"><img src="/src/assets/images/chart.png" alt="统计" class="btn-icon"></button>
                     </div>
                   </div>
                 </div>
@@ -136,7 +139,7 @@
 
             <!-- 空状态 -->
             <div v-if="groupedRelationships.red.length === 0 && groupedRelationships.yellow.length === 0 && groupedRelationships.green.length === 0" class="empty-state">
-              <div class="empty-icon">🌊</div>
+              <div class="empty-icon"><img src="/src/assets/images/empty.png" alt="空状态" class="empty-image"></div>
               <div class="empty-title">欢迎来到蓝境</div>
               <div class="empty-text">开始添加你重要的关系，让每一段关系都被看见</div>
               <button class="empty-btn" @click="openAddModal">添加重要的人</button>
@@ -206,7 +209,7 @@ const mainStore = useMainStore()
 const authStore = useAuthStore()
 
 // 状态管理
-let selectedAvatar = '😊'
+let selectedAvatar = '/src/assets/images/avatar1.png'
 let selectedType = 'friend'
 let selectedLevel = 'friend'
 
@@ -232,7 +235,7 @@ watch(currentPage, (newPage) => {
 
 // 打开添加模态框
 const openAddModal = () => {
-  selectedAvatar = '😊'
+  selectedAvatar = '/src/assets/images/avatar1.png'
   selectedType = 'friend'
   selectedLevel = 'friend'
   renderAddModalContent()
@@ -259,7 +262,9 @@ const renderAddModalContent = () => {
   if (avatarGrid) {
     avatarGrid.innerHTML = AVATAR_OPTIONS.map(a => `
       <div class="avatar-option ${a === selectedAvatar ? 'selected' : ''}" 
-           @click="selectAddAvatar('${a}')">${a}</div>
+           @click="selectAddAvatar('${a}')">
+        <img src="${a}" alt="头像" class="avatar-image">
+      </div>
     `).join('')
   }
 
@@ -267,7 +272,7 @@ const renderAddModalContent = () => {
     typeRow.innerHTML = Object.entries(RELATIONSHIP_TYPES).map(([key, val]) => `
       <div class="type-option ${key === selectedType ? 'selected' : ''}"
            @click="selectAddType('${key}')">
-        <span class="type-icon">${val.icon}</span>
+        <img src="${val.icon}" alt="${val.label}" class="type-icon">
         <span class="type-label">${val.label}</span>
       </div>
     `).join('')
@@ -1050,5 +1055,61 @@ onMounted(async () => {
 @keyframes float {
   0%, 100% { transform: translateY(0) scale(1); }
   50% { transform: translateY(-10px) scale(1.05); }
+}
+
+/* 图片图标样式 */
+.icon-image {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.status-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  margin-right: 8px;
+}
+
+.temp-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.tag-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.btn-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.avatar-image {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.empty-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.type-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 6px;
 }
 </style>

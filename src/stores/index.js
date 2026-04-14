@@ -2,9 +2,9 @@ import { defineStore } from 'pinia'
 
 // 关系类型和等级数据
 export const RELATIONSHIP_TYPES = {
-  friend: { label: '朋友', icon: '👥' },
-  lover: { label: '恋人', icon: '❤️' },
-  family: { label: '家人', icon: '🏠' }
+  friend: { label: '朋友', icon: '/src/assets/images/friend.png' },
+  lover: { label: '恋人', icon: '/src/assets/images/lover.png' },
+  family: { label: '家人', icon: '/src/assets/images/family.png' }
 }
 
 export const RELATIONSHIP_LEVELS = {
@@ -15,7 +15,28 @@ export const RELATIONSHIP_LEVELS = {
   best: { label: '挚友', value: 4 }
 }
 
-export const AVATAR_OPTIONS = ['😊', '🤝', '❤️', '🎉', '🎁', '🌟', '🌸', '☀️', '🌙', '🔥', '💫', '🌈', '🎨', '🎵', '🏠', '👨‍👩‍👧', '🤗', '💪', '🎯', '📚']
+export const AVATAR_OPTIONS = [
+  '/src/assets/images/avatar1.png',
+  '/src/assets/images/avatar2.png',
+  '/src/assets/images/avatar3.png',
+  '/src/assets/images/avatar4.png',
+  '/src/assets/images/avatar5.png',
+  '/src/assets/images/avatar6.png',
+  '/src/assets/images/avatar7.png',
+  '/src/assets/images/avatar8.png',
+  '/src/assets/images/avatar9.png',
+  '/src/assets/images/avatar10.png',
+  '/src/assets/images/avatar11.png',
+  '/src/assets/images/avatar12.png',
+  '/src/assets/images/avatar13.png',
+  '/src/assets/images/avatar14.png',
+  '/src/assets/images/avatar15.png',
+  '/src/assets/images/avatar16.png',
+  '/src/assets/images/avatar17.png',
+  '/src/assets/images/avatar18.png',
+  '/src/assets/images/avatar19.png',
+  '/src/assets/images/avatar20.png'
+]
 
 // 获取当前日期
 const getCurrentDate = () => {
@@ -122,7 +143,7 @@ export const useMainStore = defineStore('main', {
         {
           id: '1',
           name: '小明',
-          avatar: '🤝',
+          avatar: '/src/assets/images/avatar1.png',
           type: 'friend',
           level: 'close',
           birthday: '04-13',
@@ -137,7 +158,7 @@ export const useMainStore = defineStore('main', {
         {
           id: '2',
           name: '老妈',
-          avatar: '🏠',
+          avatar: '/src/assets/images/avatar2.png',
           type: 'family',
           level: 'best',
           birthday: '08-15',
@@ -152,7 +173,7 @@ export const useMainStore = defineStore('main', {
         {
           id: '3',
           name: '小红',
-          avatar: '❤️',
+          avatar: '/src/assets/images/avatar3.png',
           type: 'lover',
           level: 'best',
           birthday: '12-25',
@@ -167,7 +188,7 @@ export const useMainStore = defineStore('main', {
         {
           id: '4',
           name: '阿杰',
-          avatar: '👥',
+          avatar: '/src/assets/images/avatar4.png',
           type: 'friend',
           level: 'friend',
           birthday: null,
