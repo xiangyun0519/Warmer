@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" style="min-height: 100vh; position: relative;">
     <!-- 背景装饰 -->
     <div class="background-decoration">
       <div class="blob blob-1"></div>
