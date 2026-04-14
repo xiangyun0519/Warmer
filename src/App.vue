@@ -65,7 +65,7 @@
                     <div class="card-info">
                       <div class="card-name">{{ r.name }}</div>
                       <div class="card-meta">
-                        <span class="card-tag"><img src="{{ RELATIONSHIP_TYPES[r.type].icon }}" alt="{{ RELATIONSHIP_TYPES[r.type].label }}" class="tag-icon"> {{ RELATIONSHIP_TYPES[r.type].label }}</span>
+                        <span class="card-tag"><img :src="RELATIONSHIP_TYPES[r.type].icon" :alt="RELATIONSHIP_TYPES[r.type].label" class="tag-icon"> {{ RELATIONSHIP_TYPES[r.type].label }}</span>
                         <span class="card-tag">{{ getDaysSince(r.lastContact) }}天前</span>
                         <span class="card-score red"><i class="fas fa-thermometer-half temp-icon"></i> {{ getCurrentScore(r) }}分</span>
                       </div>
@@ -94,7 +94,7 @@
                     <div class="card-info">
                       <div class="card-name">{{ r.name }}</div>
                       <div class="card-meta">
-                        <span class="card-tag"><img src="{{ RELATIONSHIP_TYPES[r.type].icon }}" alt="{{ RELATIONSHIP_TYPES[r.type].label }}" class="tag-icon"> {{ RELATIONSHIP_TYPES[r.type].label }}</span>
+                        <span class="card-tag"><img :src="RELATIONSHIP_TYPES[r.type].icon" :alt="RELATIONSHIP_TYPES[r.type].label" class="tag-icon"> {{ RELATIONSHIP_TYPES[r.type].label }}</span>
                         <span class="card-tag">{{ getDaysSince(r.lastContact) }}天前</span>
                         <span class="card-score yellow"><i class="fas fa-thermometer-half temp-icon"></i> {{ getCurrentScore(r) }}分</span>
                       </div>
@@ -123,7 +123,7 @@
                     <div class="card-info">
                       <div class="card-name">{{ r.name }}</div>
                       <div class="card-meta">
-                        <span class="card-tag"><img src="{{ RELATIONSHIP_TYPES[r.type].icon }}" alt="{{ RELATIONSHIP_TYPES[r.type].label }}" class="tag-icon"> {{ RELATIONSHIP_TYPES[r.type].label }}</span>
+                        <span class="card-tag"><img :src="RELATIONSHIP_TYPES[r.type].icon" :alt="RELATIONSHIP_TYPES[r.type].label" class="tag-icon"> {{ RELATIONSHIP_TYPES[r.type].label }}</span>
                         <span class="card-tag">{{ getDaysSince(r.lastContact) }}天前</span>
                         <span class="card-score green"><i class="fas fa-thermometer-half temp-icon"></i> {{ getCurrentScore(r) }}分</span>
                       </div>
