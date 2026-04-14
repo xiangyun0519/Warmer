@@ -14,7 +14,7 @@
     <div v-else-if="currentPage === 'register'">
       <RegisterPage />
     </div>
-    <div v-else-if="isAuthenticated">
+    <div v-else>
       <!-- 主容器 -->
       <div class="container">
         <!-- 头部 -->
@@ -221,6 +221,7 @@ const currentPage = computed(() => {
   const hash = window.location.hash
   if (hash === '#/login') return 'login'
   if (hash === '#/register') return 'register'
+  // 暂时默认显示首页
   return 'home'
 })
 
@@ -399,14 +400,9 @@ onMounted(async () => {
   // 初始化认证状态
   await authStore.initAuth()
   
-  // 如果未登录且不是登录/注册页面，跳转到登录页
-  if (!isAuthenticated.value && currentPage.value === 'home') {
-    window.location.href = '#/login'
-  } else if (isAuthenticated.value) {
-    // 已登录则初始化数据
-    mainStore.initData()
-    drawHeaderLogo()
-  }
+  // 暂时跳过认证，直接显示首页数据进行测试
+  mainStore.initData()
+  drawHeaderLogo()
 })
 </script>
 
